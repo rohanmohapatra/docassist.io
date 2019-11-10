@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "e16f9de1-c57b-4757-96a9-a38c67566987",
+		"name": "JLTIndaChallenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Upload Template and ClientJson",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "template",
+							"type": "file",
+							"src": "/home/rohan/Desktop/RohanMohapatra_Aadhar.pdf"
+						},
+						{
+							"key": "clientJson",
+							"type": "file",
+							"src": "/home/rohan/Desktop/Semester7/ResearchCredits/MetaHeuristicNonConvex/PSO-CDHS-CEES-Compare/compareFunctions.json"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/api/v1/upload/template",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"upload",
+						"template"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
