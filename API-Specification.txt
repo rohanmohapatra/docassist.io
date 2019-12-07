@@ -1,0 +1,4 @@
+API Spec : 
+1. /api/v1/templates/upload 
+This should upload template and save the location to database
+2. /api/v1/data/upload
