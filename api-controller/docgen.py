@@ -69,8 +69,19 @@ def generate_doc(template_location, context):
 	'''
 
 	docx_object.render(context)
-	docx_object.render(context)
+	#docx_object.render(context)
+	'''
+	Below was my XML Part
+	print(docx_object.get_xml())
+	for para in docx_object.paragraphs:
+		print(para._p.r_lst)
+		for r in para._p.r_lst:
+			print("R:",r.xml)
+		print(para.text)
+	'''
+
 	gen_doc_location = "outputs/" + client_name + '_' + str(int(time.time())) + '_' + file_name
+	#docx_object.get_docx().save(gen_doc_location)
 	docx_object.save(gen_doc_location)
 
 	#gen_doc_location = fill_client_data(docx_object, file_name, client_name, context)
