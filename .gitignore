@@ -1,2 +1,7 @@
  __pycache__/
  *.pyc
+
+ api-controller/__pycache__/
+ api-controller/dataccess/__pycache__/
+ api-controller/utils/__pycache__/
+ api-controller/views/__pycache__/
