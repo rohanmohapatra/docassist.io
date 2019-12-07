@@ -1,10 +1,14 @@
 from docxtpl import DocxTemplate, RichText
 
-import comtypes.client
+
 import json
 import os
 import time
+import subprocess
 import sys
+
+if os.name == 'nt': 
+	import comtypes.client
 
 def get_default_tags(docx_object, template_folder):
 	default_tags = {'page_break': RichText('\f')}
@@ -87,4 +91,11 @@ if __name__=="__main__":
 
 		print("word doc generated")
 		pdf_name = gen_doc_loc.split('.')[0]+'.pdf'
-		make_pdf(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
+		print(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
+		if os.name == 'nt':
+			make_pdf(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
+		elif os.name == 'posix':
+			#print('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(pdf_name)+'"')
+			
+			subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.dirname(os.path.abspath(pdf_name))+'"',shell=True)
+
