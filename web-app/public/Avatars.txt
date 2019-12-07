@@ -1,0 +1,55 @@
+<Avatar
+  avatarStyle='Transparent'
+  topType='ShortHairShortCurly'
+  accessoriesType='Prescription02'
+  hairColor='Black'
+  facialHairType='BeardLight'
+  facialHairColor='Black'
+  clotheType='BlazerShirt'
+  eyeType='Happy'
+  eyebrowType='Default'
+  mouthType='Default'
+  skinColor='Light'
+/>
+
+<Avatar
+  avatarStyle='Transparent'
+  topType='ShortHairShortWaved'
+  accessoriesType='Blank'
+  hairColor='Black'
+  facialHairType='Blank'
+  clotheType='ShirtCrewNeck'
+  clotheColor='Red'
+  eyeType='Squint'
+  eyebrowType='DefaultNatural'
+  mouthType='Smile'
+  skinColor='Light'
+/>
+
+<Avatar
+  avatarStyle='Transparent'
+  topType='ShortHairShortFlat'
+  accessoriesType='Prescription02'
+  hairColor='Black'
+  facialHairType='Blank'
+  clotheType='Hoodie'
+  clotheColor='Heather'
+  eyeType='WinkWacky'
+  eyebrowType='RaisedExcitedNatural'
+  mouthType='Tongue'
+  skinColor='Pale'
+/>
+
+<Avatar
+  avatarStyle='Transparent'
+  topType='ShortHairShortWaved'
+  accessoriesType='Blank'
+  hairColor='Black'
+  facialHairType='MoustacheFancy'
+  facialHairColor='Black'
+  clotheType='BlazerSweater'
+  eyeType='EyeRoll'
+  eyebrowType='DefaultNatural'
+  mouthType='Concerned'
+  skinColor='Light'
+/>
