@@ -1,11 +1,13 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
-import { Minimal as MinimalLayout } from './layouts';
+import { Minimal as MinimalLayout, Template as TemplateLayout } from './layouts';
 import { RouteWithLayout } from './components';
 
 import {
     Home as HomeView,
-    NotFound as NotFoundView
+    NotFound as NotFoundView,
+    UploadTemplate as UploadTemplateView,
+    ViewTemplates as ViewTemplatesView
   } from './views';
 
 const Routes = () => {
@@ -23,9 +25,9 @@ const Routes = () => {
                 path="/home"
             />
             <RouteWithLayout
-                component={NotFoundView}
+                component={UploadTemplateView}
                 exact
-                layout={MinimalLayout}
+                layout={TemplateLayout}
                 path="/upload/template"
             />
             <RouteWithLayout
@@ -35,9 +37,9 @@ const Routes = () => {
                 path="/upload/data"
             />
             <RouteWithLayout
-                component={NotFoundView}
+                component={ViewTemplatesView}
                 exact
-                layout={MinimalLayout}
+                layout={TemplateLayout}
                 path="/view/template"
             />
             <RouteWithLayout
