@@ -7,6 +7,8 @@ import datetime
 import os
 from flask import current_app as app
 from dataccess.templates_setfunctions import add_template_to_db
+from dataccess.templates_getfunctions import get_templates_for_user
+from flask_cors import CORS, cross_origin
 
 from utils.utils import allowed_file_extensions
 from werkzeug.utils import secure_filename
@@ -19,6 +21,7 @@ def health_check():
     return Response(status=200)
 
 @templates_view.route("/upload/",methods=['POST'])
+@cross_origin()
 def upload_template():
     ALLOWED_EXTENSIONS = set(['docx'])
     if request.method == 'POST':
@@ -36,8 +39,12 @@ def upload_template():
         #If allowed extensions save the Docx
         if template and allowed_file_extensions(template.filename, ALLOWED_EXTENSIONS):
             template_filename = secure_filename(template.filename)
-            template.save(os.path.join(app.config['UPLOAD_FOLDER'], template_filename))
-            add_template_to_db(template_filename,str(os.path.join(app.config['UPLOAD_FOLDER'], template_filename)))
+            try:
+                add_template_to_db(template_filename,str(os.path.join(app.config['UPLOAD_FOLDER'], template_filename)))
+                template.save(os.path.join(app.config['UPLOAD_FOLDER'], template_filename))
+            except :
+                return Response(status=409)
+            
 
         else:
             return Response('["file types not supported"]', status=400)
@@ -46,3 +53,12 @@ def upload_template():
         return Response(status=200)
     else:
         Response(status=405)
+
+
+@templates_view.route("/view_list/",methods=['GET'])
+@cross_origin()
+def view_templates():
+    result = get_templates_for_user()
+    for i in result:
+        i["location"] = str(i["location"])
+    return jsonify(result) 

@@ -8,3 +8,4 @@
 
  web-app/node_modules
  
+ /docassis_venv/*
