@@ -6,4 +6,6 @@
  api-controller/utils/__pycache__/
  api-controller/views/__pycache__/
 
- docassis_venv/*
+ web-app/node_modules
+ 
+ /docassis_venv/*
