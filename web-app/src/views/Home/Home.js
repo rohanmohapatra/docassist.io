@@ -113,7 +113,7 @@ class Home extends Component {
                             className={classes.gridCard}
                             >
                                 <Card className={classes.card}>
-                                <CardActionArea>
+                                <CardActionArea href="/upload/template">
                                     <CardMedia
                                     className={classes.media}
                                     image="/images/steps/features_stage1.png"

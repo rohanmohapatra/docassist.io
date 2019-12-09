@@ -10,6 +10,7 @@ import {
   Grid,
   Divider
 } from '@material-ui/core';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
@@ -38,9 +39,20 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   filename:{
+    marginTop: 10,
     fontFamily: 'Montserrat',
-    fontWeight: 600
-  }
+    fontWeight: 600,
+    fontSize: 18
+  },
+  version:{
+    fontFamily: 'Montserrat',
+    fontWeight: 300,
+    fontSize: 15
+  },
+  verified:{
+    color : theme.palette.primary.main,
+    fontSize: 15
+    }
 }));
 
 const TemplateCard = props => {
@@ -62,12 +74,22 @@ const TemplateCard = props => {
           />
         </div>
         <Typography
-          align="center"
+          align="left"
           gutterBottom
           variant="h4"
           className={classes.filename}
         >
-          {template.filename}
+          {template.filename} <VerifiedUserIcon className={classes.verified} />
+        </Typography>
+       
+        <Typography
+          align="left"
+          gutterBottom
+          variant="body"
+          component="p"
+          className={classes.version}
+        >
+          Version : {template.version}
         </Typography>
         
       </CardContent>
