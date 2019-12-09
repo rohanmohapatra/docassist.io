@@ -42,7 +42,8 @@ def upload_template():
             try:
                 add_template_to_db(template_filename,str(os.path.join(app.config['UPLOAD_FOLDER'], template_filename)))
                 template.save(os.path.join(app.config['UPLOAD_FOLDER'], template_filename))
-            except :
+            except Exception as e:
+                print(e)
                 return Response(status=409)
             
 

@@ -69,9 +69,11 @@ def generate_doc(template_location, context):
 	'''
 
 	docx_object.render(context)
-	#docx_object.render(context)
+	docx_object.render(context)
+	#g = (docx_object.get_headers_footers_xml("http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"))
+	#print(''.join(g))
 	'''
-	Below was my XML Part
+	print("---------------------------------------------------------")
 	print(docx_object.get_xml())
 	for para in docx_object.paragraphs:
 		print(para._p.r_lst)
@@ -79,7 +81,6 @@ def generate_doc(template_location, context):
 			print("R:",r.xml)
 		print(para.text)
 	'''
-
 	gen_doc_location = "outputs/" + client_name + '_' + str(int(time.time())) + '_' + file_name
 	#docx_object.get_docx().save(gen_doc_location)
 	docx_object.save(gen_doc_location)
