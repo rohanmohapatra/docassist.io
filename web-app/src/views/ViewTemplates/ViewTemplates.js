@@ -6,6 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import axios from 'axios';
 import { TemplateCard } from './components';
 import mockData from './data';
+import { pathToFileURL } from 'url';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const ViewTemplates = () => {
+const ViewTemplates = props => {
   const classes = useStyles();
 
   const [products] = useState(mockData);
@@ -46,7 +47,15 @@ const ViewTemplates = () => {
         }
       };
         fetchData();
-  },[])
+  },[]);
+
+  function onAction(action, payload) {
+    if(action === 'useTemp') {
+      console.log(action, props, payload);
+      props.history.push('/upload/data', payload);
+    }
+  };
+
   return (
     <div className={classes.root}>
       <div className={classes.content}>
@@ -62,7 +71,7 @@ const ViewTemplates = () => {
               md={6}
               xs={12}
             >
-              <TemplateCard template={template} />
+              <TemplateCard template={template} onAction={onAction} />
             </Grid>
           ))}
         </Grid>

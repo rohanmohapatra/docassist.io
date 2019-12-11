@@ -11,6 +11,8 @@ import {
   Divider
 } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import BuildIcon from '@material-ui/icons/Build';
+import IconButton from '@material-ui/core/IconButton';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
@@ -107,7 +109,10 @@ const TemplateCard = props => {
               display="inline"
               variant="body2"
             >
-              Add Necessaty Buttons
+              <IconButton onClick={e => props.onAction('useTemp', { templateName: template.filename })}>
+                <BuildIcon />
+              </IconButton>
+              
             </Typography>
           </Grid>
         </Grid>

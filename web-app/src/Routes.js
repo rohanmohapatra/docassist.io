@@ -7,7 +7,8 @@ import {
     Home as HomeView,
     NotFound as NotFoundView,
     UploadTemplate as UploadTemplateView,
-    ViewTemplates as ViewTemplatesView
+    ViewTemplates as ViewTemplatesView,
+    GenerateDoc as GenerateDocView,
   } from './views';
 
 const Routes = () => {
@@ -31,12 +32,6 @@ const Routes = () => {
                 path="/upload/template"
             />
             <RouteWithLayout
-                component={NotFoundView}
-                exact
-                layout={MinimalLayout}
-                path="/upload/data"
-            />
-            <RouteWithLayout
                 component={ViewTemplatesView}
                 exact
                 layout={TemplateLayout}
@@ -47,6 +42,13 @@ const Routes = () => {
                 exact
                 layout={MinimalLayout}
                 path="/view/generated"
+            />
+
+            <RouteWithLayout 
+                component={GenerateDocView}
+                exact
+                layout={TemplateLayout}
+                path='/upload/data'
             />
         </Switch>
 
