@@ -8,7 +8,8 @@ import {
   CardActions,
   Typography,
   Grid,
-  Divider
+  Divider,
+  Button
 } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import BuildIcon from '@material-ui/icons/Build';
@@ -114,6 +115,9 @@ const TemplateCard = props => {
               </IconButton>
               
             </Typography>
+            <Button variant="contained" color="primary" className={classes.button} href={"/edit/template/"+template._id}>
+                Edit
+            </Button>
           </Grid>
         </Grid>
       </CardActions>

@@ -9,6 +9,7 @@ import {
     UploadTemplate as UploadTemplateView,
     ViewTemplates as ViewTemplatesView,
     GenerateDoc as GenerateDocView,
+    EditTemplate as EditTemplateView,
   } from './views';
 
 const Routes = () => {
@@ -30,6 +31,12 @@ const Routes = () => {
                 exact
                 layout={TemplateLayout}
                 path="/upload/template"
+            />
+            <RouteWithLayout
+                component={EditTemplateView}
+                exact
+                layout={TemplateLayout}
+                path="/edit/template/:template_id"
             />
             <RouteWithLayout
                 component={ViewTemplatesView}

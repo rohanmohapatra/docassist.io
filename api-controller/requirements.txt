@@ -2,4 +2,6 @@ flask
 flask_cors
 docxtpl==0.6.3
 comtypes==1.1.7
+mammoth
+html2docx
 
