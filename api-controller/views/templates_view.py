@@ -7,11 +7,15 @@ import datetime
 import os
 from flask import current_app as app
 from dataccess.templates_setfunctions import add_template_to_db
-from dataccess.templates_getfunctions import get_templates_for_user
+from dataccess.templates_getfunctions import get_templates_for_user, get_template_by_id
 from flask_cors import CORS, cross_origin
+from utils.aes import encrypt,decrypt
 
 from utils.utils import allowed_file_extensions
 from werkzeug.utils import secure_filename
+
+import mammoth
+from html2docx import html2docx
 
 templates_view = Blueprint('templates_view',__name__)
 
@@ -63,3 +67,30 @@ def view_templates():
     for i in result:
         i["location"] = str(i["location"])
     return jsonify(result) 
+
+@templates_view.route('/<template_id>/edit/',methods=['GET'])
+@cross_origin()
+def edit_templates(template_id):
+    result = get_template_by_id(template_id)
+    location = decrypt(app.secret_key, result["location"])
+    print(location)
+    with open(location, "rb") as docx_file:
+        result = mammoth.convert_to_html(docx_file)
+        html = result.value # The generated HTML
+        #print(html)
+        return html
+
+@templates_view.route('/<template_id>/save/',methods=['POST'])
+@cross_origin()
+def save_templates(template_id):
+    json_data = request.get_json(force=True)
+    #print(json_data)
+    html = json_data["html"]
+    buf = html2docx(html, title="Edited Template")
+    result = get_template_by_id(template_id)
+    location = decrypt(app.secret_key, result["location"])
+    #print(location)
+    with open(location, "wb") as fp:
+        fp.write(buf.getvalue())
+        add_template_to_db(result["filename"],location)
+    return Response(status=200)

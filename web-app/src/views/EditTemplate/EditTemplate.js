@@ -1,9 +1,9 @@
 import React,{useEffect, useState, Component} from 'react';
 import { makeStyles, withStyles } from '@material-ui/styles';
-import { Grid, Typography, Button } from '@material-ui/core';
+import { Grid, Typography, Button, IconButton } from '@material-ui/core';
 import { Editor, SuccessBar, ErrorBar } from './components';
 import axios from 'axios';
-
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 const styles = (theme => ({
   root: {
     padding: theme.spacing(4)
@@ -18,6 +18,14 @@ const styles = (theme => ({
     maxWidth: '100%',
     width: 560
   },
+  contentHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: theme.spacing(5),
+    paddingBototm: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2)
+  },
 
 }));
 class EditTemplate extends Component{
@@ -29,6 +37,10 @@ class EditTemplate extends Component{
       savestate: "none"
     }
     this.myCallback = this.myCallback.bind(this);
+    this.handleBack = this.handleBack.bind(this);
+    const {text, match: {params}} = this.props;
+    this.name = params.template_id;
+    this.history = props.history;
    
 
   }
@@ -59,12 +71,17 @@ class EditTemplate extends Component{
       )
     }
 }
+  handleBack(){
+    this.history.goBack();
+  };
   componentWillMount(){
+    console.log(this.props);
+
     var self = this;
     const fetchData = async () => {
       var host = 'localhost'
       
-      var apiBaseUrl = '/api/templates/edit/';
+      var apiBaseUrl = '/api/templates/'+this.name+'/edit/';
       var apiBasePort = '5000';
       const result = await axios({
           url: 'http://localhost:5000'+apiBaseUrl,
@@ -79,9 +96,15 @@ class EditTemplate extends Component{
   
 
   render() {
+    
     const classes = this.props.classes;
     return (
       <div className={classes.root}>
+        <div className={classes.contentHeader}>
+              <IconButton onClick={this.handleBack}>
+                <ArrowBackIcon />
+              </IconButton>
+            </div>
         <Grid
           container
           justify="center"
@@ -92,7 +115,8 @@ class EditTemplate extends Component{
             lg={12}
             xs={12}
           >
-            {this.state.status &&<Editor placeholder={'Write something...'} editedHtml={this.state.html} callbackFromParent={this.myCallback}/>}
+            
+            {this.state.status &&<Editor placeholder={'Write something...'} editedHtml={this.state.html} callbackFromParent={this.myCallback} templateId={this.name}/>}
             
             <SuccessBar open={this.state.savestate} />
             <ErrorBar open={this.state.savestate} />

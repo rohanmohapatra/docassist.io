@@ -35,7 +35,7 @@ const Routes = () => {
                 component={EditTemplateView}
                 exact
                 layout={TemplateLayout}
-                path="/edit/template"
+                path="/edit/template/:template_id"
             />
             <RouteWithLayout
                 component={NotFoundView}

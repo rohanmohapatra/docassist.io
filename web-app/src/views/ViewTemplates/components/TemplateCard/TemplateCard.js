@@ -8,7 +8,8 @@ import {
   CardActions,
   Typography,
   Grid,
-  Divider
+  Divider,
+  Button
 } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -103,12 +104,9 @@ const TemplateCard = props => {
             className={classes.statsItem}
             item
           >
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              Add Necessaty Buttons
-            </Typography>
+            <Button variant="contained" color="primary" className={classes.button} href={"/edit/template/"+template._id}>
+                Edit
+            </Button>
           </Grid>
         </Grid>
       </CardActions>

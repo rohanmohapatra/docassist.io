@@ -54,7 +54,7 @@ class Editor extends React.Component {
     }
     handleSave(){
       const submitData = async() => {
-        var apiBaseUrl = '/api/templates/save/';
+        var apiBaseUrl = '/api/templates/'+this.props.templateId+'/save/';
         var data = {
           html : this.state.editorHtml
         }
@@ -147,7 +147,8 @@ class Editor extends React.Component {
    */
   Editor.propTypes = {
     placeholder: PropTypes.string,
-    editedHtml: PropTypes.string
+    editedHtml: PropTypes.string,
+    templateId: PropTypes.string
   }
 
   export default withStyles(styles)(Editor);
