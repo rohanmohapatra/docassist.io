@@ -1,5 +1,5 @@
 from docxtpl import DocxTemplate, RichText
-
+from sys import platform as _platform
 
 import json
 import os
@@ -81,7 +81,7 @@ def generate_doc(template_location, context):
 			print("R:",r.xml)
 		print(para.text)
 	'''
-	gen_doc_location = "outputs/" + client_name + '_' + str(int(time.time())) + '_' + file_name
+	gen_doc_location = "output/user_a/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
 	#docx_object.get_docx().save(gen_doc_location)
 	docx_object.save(gen_doc_location)
 
@@ -103,11 +103,15 @@ if __name__=="__main__":
 
 		print("word doc generated")
 		pdf_name = gen_doc_loc.split('.')[0]+'.pdf'
-		print(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
+		print(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
 		if os.name == 'nt':
-			make_pdf(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
+			make_pdf(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
 		elif os.name == 'posix':
 			#print('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(pdf_name)+'"')
-			
-			subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.dirname(os.path.abspath(pdf_name))+'"',shell=True)
+			if _platform == "linux" or _platform == "linux2":
+			# linux
+				subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+'output/user_a/pdf'+'"',shell=True)
+			elif _platform == "darwin":
+			# MAC OS X
+				print("Support not yet added")
 
