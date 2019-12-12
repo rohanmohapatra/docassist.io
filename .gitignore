@@ -5,6 +5,8 @@
  api-controller/dataccess/__pycache__/
  api-controller/utils/__pycache__/
  api-controller/views/__pycache__/
+ api-controller/template/
+ api-controller/data/
 
  web-app/node_modules
  

@@ -43,7 +43,10 @@ const useStyles = makeStyles(theme => ({
               <Typography variant="subtitle2">
                 Upload data for {props.location.state.templateName} template.
               </Typography>
-              <FilePond allowMultiple={true} server="http://localhost:5000/api/templates/upload/" name="template"/>
+              <FilePond 
+              allowMultiple={true} 
+              server={`http://localhost:5000/api/data/upload?tempn=${props.location.state.templateName}`}
+              name="data"/>
             </div>
           </Grid>
         </Grid>
