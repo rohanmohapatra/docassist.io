@@ -14,6 +14,8 @@ import {
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import BuildIcon from '@material-ui/icons/Build';
 import IconButton from '@material-ui/core/IconButton';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import DescriptionIcon from '@material-ui/icons/Description';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 
@@ -110,14 +112,14 @@ const TemplateCard = props => {
               display="inline"
               variant="body2"
             >
-              <IconButton onClick={e => props.onAction('useTemp', { templateName: template.filename })}>
-                <BuildIcon />
+              <IconButton href={template.pdfLink}>
+                <PictureAsPdfIcon />
+              </IconButton>
+              <IconButton href={template.docLink}>
+                <DescriptionIcon />
               </IconButton>
               
             </Typography>
-            <Button variant="contained" color="primary" className={classes.button} href={"/edit/template/"+template._id}>
-                Edit
-            </Button>
           </Grid>
         </Grid>
       </CardActions>

@@ -71,8 +71,13 @@ def upload_data():
 def completedDocs():
     path = './output/user_a/docx'
     with os.scandir(path) as ls:
-        docxFiles = [{"filename": entry.name, "createdTime": entry.stat().st_ctime_ns}
-                     for entry in ls if entry.is_file()]
+        docxFiles = [{
+            "filename": entry.name,
+            "createdTime": entry.stat().st_ctime_ns,
+            "docLink": "http://localhost:5000/api/data/download/"+entry.name,
+            "pdfLink": "http://localhost:5000/api/data/download/"+(entry.name.split('.')[0] + '.pdf')
+        }
+            for entry in ls if entry.is_file()]
     print(docxFiles)
     return jsonify(docxFiles)
 
