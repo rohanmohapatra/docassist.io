@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, jsonify, request
+from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from flask_cors import CORS, cross_origin
 import json
@@ -64,3 +64,30 @@ def upload_data():
         return Response(status=200)
     else:
         Response(status=405)
+
+@data_view.route("/docs", methods=['GET'])
+@cross_origin()
+def completedDocs():
+    path = './output/user_a/docx'
+    with os.scandir(path) as ls:
+        docxFiles = [entry.name for entry in ls if entry.is_file()]    
+    # print(docxFiles)
+    return jsonify(docxFiles)
+
+@data_view.route("/download/<name>", methods=['GET'])
+@cross_origin()
+def downloadDocs(name):
+    path = './output/user_a/'
+
+    fileFormt = name.split('.')[1]
+    print(name.split('.'))
+
+    if(fileFormt == 'docx'):
+        print('sending docx:', name)
+        return send_from_directory(path+'docx', name)
+    elif(fileFormt == 'pdf'):
+        print('sending pdf:', name)
+        return send_from_directory(path+'pdf', name)
+    else:
+        print('sending nothing:', name)
+        return Response(status=404)
