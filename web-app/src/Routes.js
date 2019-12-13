@@ -10,6 +10,7 @@ import {
     ViewTemplates as ViewTemplatesView,
     GenerateDoc as GenerateDocView,
     EditTemplate as EditTemplateView,
+    ViewCompletedDocs as ViewCompletedDocsView,
   } from './views';
 
 const Routes = () => {
@@ -45,7 +46,7 @@ const Routes = () => {
                 path="/view/template"
             />
             <RouteWithLayout
-                component={NotFoundView}
+                component={ViewCompletedDocsView}
                 exact
                 layout={MinimalLayout}
                 path="/view/generated"

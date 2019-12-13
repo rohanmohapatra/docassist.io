@@ -65,14 +65,17 @@ def upload_data():
     else:
         Response(status=405)
 
+
 @data_view.route("/docs", methods=['GET'])
 @cross_origin()
 def completedDocs():
     path = './output/user_a/docx'
     with os.scandir(path) as ls:
-        docxFiles = [entry.name for entry in ls if entry.is_file()]    
-    # print(docxFiles)
+        docxFiles = [{"filename": entry.name, "createdTime": entry.stat().st_ctime_ns}
+                     for entry in ls if entry.is_file()]
+    print(docxFiles)
     return jsonify(docxFiles)
+
 
 @data_view.route("/download/<name>", methods=['GET'])
 @cross_origin()
