@@ -98,6 +98,7 @@ if __name__=="__main__":
 	args = parser.parse_args()
 	
 	with open(args.data_location) as json_file:
+		print(args.data_location)
 		client_data = json.load(json_file)
 		gen_doc_loc = generate_doc(args.template_location, client_data)
 
