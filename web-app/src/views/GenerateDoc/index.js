@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Divider } from '@material-ui/core';
 import { FilePond } from 'react-filepond';
+import { ClientTable } from './components';
 import 'filepond/dist/filepond.min.css';
-// import axios from 'axios';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,7 +24,23 @@ const useStyles = makeStyles(theme => ({
   
   const GenerateDoc = props => {
     const classes = useStyles();
-  
+    const [clients, setClients] = useState([]);
+    useEffect(() => {
+      const fetchData = async () => {
+          var host = 'localhost'
+          var apiBaseUrl = '/api/data/list_all_clients/';
+          var apiBasePort = '5000';
+          const result = await axios({
+              url: 'http://localhost:5000'+apiBaseUrl,
+            });
+            if(result.status === 200){
+              console.log("Status is 200")
+              setClients(result.data);
+              console.log(result.data);
+          }
+        };
+          fetchData();
+    },[]);
     return (
       <div className={classes.root}>
         <Grid
@@ -47,9 +64,12 @@ const useStyles = makeStyles(theme => ({
               allowMultiple={true} 
               server={`http://localhost:5000/api/data/upload?tempn=${props.location.state.templateName}`}
               name="data"/>
+              
             </div>
           </Grid>
         </Grid>
+        <Divider/>
+        <ClientTable client={clients} templateName={props.location.state.templateName} />
       </div>
     );
   };

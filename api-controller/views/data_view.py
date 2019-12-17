@@ -105,7 +105,7 @@ def upload_data():
     else:
         Response(status=405)
 
-@data_view.route("/list_all_clients", methods=["GET"])
+@data_view.route("/list_all_clients/", methods=["GET"])
 @cross_origin()
 def listAllClients():
     try:
