@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import BackupIcon from '@material-ui/icons/Backup';
 import ViewListIcon from '@material-ui/icons/ViewList';
-
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import { SidebarNav} from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -46,6 +46,11 @@ const Sidebar = props => {
       title: 'View Templates',
       href: '/view/template',
       icon: <ViewListIcon />
+    },
+    {
+      title : 'Bulk Generate',
+      href: '/bulk/generate',
+      icon: <AddToPhotosIcon />
     }
   ];
 

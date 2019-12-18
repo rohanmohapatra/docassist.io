@@ -1,6 +1,6 @@
 import React,{useEffect, useState, Component} from 'react';
 import { makeStyles, withStyles } from '@material-ui/styles';
-import { Grid, Typography, Button, IconButton } from '@material-ui/core';
+import { Grid, Typography, Button, IconButton, CircularProgress } from '@material-ui/core';
 import { Editor, SuccessBar, ErrorBar } from './components';
 import axios from 'axios';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -115,7 +115,7 @@ class EditTemplate extends Component{
             lg={12}
             xs={12}
           >
-            
+            {!this.state.status && <CircularProgress />}
             {this.state.status &&<Editor placeholder={'Write something...'} editedHtml={this.state.html} callbackFromParent={this.myCallback} templateId={this.name}/>}
             
             <SuccessBar open={this.state.savestate} />

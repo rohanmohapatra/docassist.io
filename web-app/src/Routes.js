@@ -47,6 +47,12 @@ const Routes = () => {
             <RouteWithLayout
                 component={NotFoundView}
                 exact
+                layout={TemplateLayout}
+                path="/bulk/generate"
+            />
+            <RouteWithLayout
+                component={NotFoundView}
+                exact
                 layout={MinimalLayout}
                 path="/view/generated"
             />
