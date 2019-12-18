@@ -11,6 +11,7 @@ import {
     GenerateDoc as GenerateDocView,
     EditTemplate as EditTemplateView,
     ViewCompletedDocs as ViewCompletedDocsView,
+    BulkGenerate as BulkGenerateView
   } from './views';
 
 const Routes = () => {
@@ -45,14 +46,15 @@ const Routes = () => {
                 layout={TemplateLayout}
                 path="/view/template"
             />
+
             <RouteWithLayout
-                component={ViewCompletedDocsView}
+                component={BulkGenerateView}
                 exact
                 layout={TemplateLayout}
                 path="/bulk/generate"
             />
             <RouteWithLayout
-                component={NotFoundView}
+                component={ViewCompletedDocsView}
                 exact
                 layout={MinimalLayout}
                 path="/view/generated"

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   inner: {
-    minWidth: 1050
+    minWidth: 450
   },
   nameContainer: {
     display: 'flex',
@@ -59,6 +59,7 @@ const ClientsTable = props => {
     }
 
     setSelectedClients(selectedClients);
+    props.callbackFromParent({clients: selectedClients});
   };
 
   const handleSelectOne = (event, _id) => {
@@ -79,6 +80,7 @@ const ClientsTable = props => {
     }
 
     setSelectedClients(newSelectedClients);
+    props.callbackFromParent({clients: newSelectedClients});
   };
 
   const handlePageChange = (event, page) => {
@@ -134,7 +136,7 @@ const ClientsTable = props => {
                     <TableCell>{client._id}</TableCell>
                     <TableCell>
                       <div className={classes.nameContainer}>
-                        <Typography variant="body1">{client.name}</Typography>
+                        <Typography variant="body1">{client.jmf_client_name}</Typography>
                       </div>
                     </TableCell>
                   </TableRow>

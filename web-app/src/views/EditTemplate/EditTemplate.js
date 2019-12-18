@@ -110,12 +110,13 @@ class EditTemplate extends Component{
           justify="center"
           spacing={4}
         >
+          {!this.state.status && <Typography variant="body"><CircularProgress />Please Wait...</Typography>} 
           <Grid
             item
             lg={12}
             xs={12}
           >
-            {!this.state.status && <CircularProgress />}
+            
             {this.state.status &&<Editor placeholder={'Write something...'} editedHtml={this.state.html} callbackFromParent={this.myCallback} templateId={this.name}/>}
             
             <SuccessBar open={this.state.savestate} />

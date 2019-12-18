@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -19,7 +18,7 @@ import {
   TablePagination
 } from '@material-ui/core';
 
-import { getInitials } from 'helpers';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -27,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   inner: {
-    minWidth: 1050
+    minWidth: 450
   },
   nameContainer: {
     display: 'flex',
@@ -41,47 +40,49 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersTable = props => {
-  const { className, users, ...rest } = props;
+const TemplatesTable = props => {
+  const { className, templates, ...rest } = props;
 
   const classes = useStyles();
 
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedTemplates, setSelectedTemplates] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
 
   const handleSelectAll = event => {
-    const { users } = props;
+    const { templates } = props;
 
-    let selectedUsers;
+    let selectedTemplates;
 
     if (event.target.checked) {
-      selectedUsers = users.map(user => user.id);
+      selectedTemplates = templates.map(template => template._id);
     } else {
-      selectedUsers = [];
+      selectedTemplates = [];
     }
 
-    setSelectedUsers(selectedUsers);
+    setSelectedTemplates(selectedTemplates);
+    props.callbackFromParent({templates: selectedTemplates});
   };
 
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedUsers.indexOf(id);
-    let newSelectedUsers = [];
+  const handleSelectOne = (event, _id) => {
+    const selectedIndex = selectedTemplates.indexOf(_id);
+    let newSelectedTemplates = [];
 
     if (selectedIndex === -1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers, id);
+      newSelectedTemplates = newSelectedTemplates.concat(selectedTemplates, _id);
     } else if (selectedIndex === 0) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(1));
-    } else if (selectedIndex === selectedUsers.length - 1) {
-      newSelectedUsers = newSelectedUsers.concat(selectedUsers.slice(0, -1));
+      newSelectedTemplates = newSelectedTemplates.concat(selectedTemplates.slice(1));
+    } else if (selectedIndex === selectedTemplates.length - 1) {
+      newSelectedTemplates = newSelectedTemplates.concat(selectedTemplates.slice(0, -1));
     } else if (selectedIndex > 0) {
-      newSelectedUsers = newSelectedUsers.concat(
-        selectedUsers.slice(0, selectedIndex),
-        selectedUsers.slice(selectedIndex + 1)
+      newSelectedTemplates = newSelectedTemplates.concat(
+        selectedTemplates.slice(0, selectedIndex),
+        selectedTemplates.slice(selectedIndex + 1)
       );
     }
 
-    setSelectedUsers(newSelectedUsers);
+    setSelectedTemplates(newSelectedTemplates);
+    props.callbackFromParent({templates: newSelectedTemplates});
   };
 
   const handlePageChange = (event, page) => {
@@ -105,58 +106,37 @@ const UsersTable = props => {
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                      checked={selectedUsers.length === users.length}
+                      checked={selectedTemplates.length === templates.length}
                       color="primary"
                       indeterminate={
-                        selectedUsers.length > 0 &&
-                        selectedUsers.length < users.length
+                        selectedTemplates.length > 0 &&
+                        selectedTemplates.length < templates.length
                       }
                       onChange={handleSelectAll}
                     />
                   </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Location</TableCell>
-                  <TableCell>Phone</TableCell>
-                  <TableCell>Registration date</TableCell>
+                  <TableCell>Template ID</TableCell>
+                  <TableCell>Template Name</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                {users.slice(0, rowsPerPage).map(user => (
+                {templates.slice(0, rowsPerPage).map(template => (
                   <TableRow
                     className={classes.tableRow}
                     hover
-                    key={user.id}
-                    selected={selectedUsers.indexOf(user.id) !== -1}
+                    key={template._id}
+                    selected={selectedTemplates.indexOf(template._id) !== -1}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        checked={selectedUsers.indexOf(user.id) !== -1}
+                        checked={selectedTemplates.indexOf(template._id) !== -1}
                         color="primary"
-                        onChange={event => handleSelectOne(event, user.id)}
+                        onChange={event => handleSelectOne(event, template._id)}
                         value="true"
                       />
                     </TableCell>
-                    <TableCell>
-                      <div className={classes.nameContainer}>
-                        <Avatar
-                          className={classes.avatar}
-                          src={user.avatarUrl}
-                        >
-                          {getInitials(user.name)}
-                        </Avatar>
-                        <Typography variant="body1">{user.name}</Typography>
-                      </div>
-                    </TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>
-                      {user.address.city}, {user.address.state},{' '}
-                      {user.address.country}
-                    </TableCell>
-                    <TableCell>{user.phone}</TableCell>
-                    <TableCell>
-                      {moment(user.createdAt).format('DD/MM/YYYY')}
-                    </TableCell>
+                    <TableCell>{template._id}</TableCell>
+                    <TableCell>{template.filename}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -167,7 +147,7 @@ const UsersTable = props => {
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
-          count={users.length}
+          count={templates.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
           page={page}
@@ -179,9 +159,9 @@ const UsersTable = props => {
   );
 };
 
-UsersTable.propTypes = {
+TemplatesTable.propTypes = {
   className: PropTypes.string,
-  users: PropTypes.array.isRequired
+  templates: PropTypes.array.isRequired
 };
 
-export default UsersTable;
+export default TemplatesTable;
