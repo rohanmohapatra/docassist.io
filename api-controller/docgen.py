@@ -98,14 +98,17 @@ if __name__=="__main__":
 	args = parser.parse_args()
 	
 	with open(args.data_location) as json_file:
+		print(args.data_location)
 		client_data = json.load(json_file)
 		gen_doc_loc = generate_doc(args.template_location, client_data)
 
 		print("word doc generated")
 		pdf_name = gen_doc_loc.split('.')[0]+'.pdf'
-		print(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
+		pdf_name = pdf_name.replace('docx', 'pdf')
+		print(pdf_name, os.path.abspath(pdf_name))
+		# print(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
 		if os.name == 'nt':
-			make_pdf(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
+			make_pdf(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
 		elif os.name == 'posix':
 			#print('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(pdf_name)+'"')
 			if _platform == "linux" or _platform == "linux2":

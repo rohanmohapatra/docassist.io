@@ -4,4 +4,5 @@ export { default as UploadTemplate } from './UploadTemplate';
 export { default as ViewTemplates } from './ViewTemplates';
 export { default as GenerateDoc } from './GenerateDoc'; 
 export { default as EditTemplate } from './EditTemplate';
+export { default as ViewCompletedDocs } from './ViewCompletedDocs';
 export { default as BulkGenerate } from './BulkGenerate';
