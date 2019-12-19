@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -9,15 +10,24 @@ import {
   Typography,
   Grid,
   Divider,
-  Button
+  Button,
+  Icon,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  TextField,
+  DialogActions
 } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import BuildIcon from '@material-ui/icons/Build';
 import IconButton from '@material-ui/core/IconButton';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import DescriptionIcon from '@material-ui/icons/Description';
+import EmailIcon from '@material-ui/icons/Email';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -57,14 +67,134 @@ const useStyles = makeStyles(theme => ({
   verified:{
     color : theme.palette.primary.main,
     fontSize: 15
+    },
+  pdf: {
+    color : '#F02201',
+  },
+  docx:{
+    color : '#537EC0',
+  },
+  email:{
+    color: '#F05826'
+  },
+  contentBody: {
+    flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]: {
+      justifyContent: 'center'
     }
+  },
+  form: {
+    paddingLeft: 25,
+    paddingRight: 25,
+    paddingBottom: 25,
+    flexBasis: 700,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2)
+    }
+  },
+  title: {
+    marginTop: theme.spacing(3)
+  },
+  textField: {
+    marginTop: theme.spacing(2)
+  },
+  policy: {
+    marginTop: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center'
+  },
 }));
 
+const schema = {
+  subject: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
+  body: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 1024
+    }
+  },
+  email: {
+    presence: { allowEmpty: false, message: 'is required' },
+    email: true,
+    length: {
+      maximum: 64
+    }
+  },
+};
+
 const TemplateCard = props => {
-  const { className, template, ...rest } = props;
+  const { className, template,emailAddress, ...rest } = props;
 
   const classes = useStyles();
 
+  const [formState, setFormState] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
+  });
+
+  useEffect(() => {
+    const errors = validate(formState.values, schema);
+
+    setFormState(formState => ({
+      ...formState,
+      isValid: errors ? false : true,
+      errors: errors || {}
+    }));
+  }, [formState.values]);
+
+  const handleChange = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]:
+          event.target.type === 'checkbox'
+            ? event.target.checked
+            : event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+
+  const hasError = field =>
+    formState.touched[field] && formState.errors[field] ? true : false;
+  const [open, setOpen] = React.useState(false);
+  const handleEmail = function(){
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleSend = event => {
+    event.preventDefault();
+    console.log(formState);
+    var pdfLink = template.pdfLink.split("/")
+    console.log(pdfLink[pdfLink.length - 1])
+    var pdfName = pdfLink[pdfLink.length - 1]
+    axios.post("http://localhost:5000/api/email/send/"+pdfName, formState.values)
+    .then(function(response){
+      console.log(response.status);
+    })
+    props.callback(true);
+    setOpen(false);
+
+  }
   return (
     <Card
       {...rest}
@@ -113,23 +243,92 @@ const TemplateCard = props => {
               variant="body2"
             >
               <IconButton href={template.pdfLink}>
-                <PictureAsPdfIcon />
+                <PictureAsPdfIcon className={classes.pdf}/>
               </IconButton>
               <IconButton href={template.docLink}>
-                <DescriptionIcon />
+                <DescriptionIcon className={classes.docx}/>
+              </IconButton>
+              <IconButton onClick={handleEmail}>
+                <EmailIcon className={classes.email}/>
               </IconButton>
               
             </Typography>
           </Grid>
         </Grid>
       </CardActions>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Compose</DialogTitle>
+        <DialogContent>
+        <div className={classes.contentBody}>
+              <form
+                className={classes.form}
+                onSubmit={handleSend}
+              >
+                <TextField
+                  className={classes.textField}
+                  error={hasError('email')}
+                  fullWidth
+                  helperText={
+                    hasError('email') ? formState.errors.email[0] : null
+                  }
+                  label="Email address"
+                  name="email"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.email || ''}
+                  variant="outlined"
+                />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('subject')}
+                  fullWidth
+                  helperText={
+                    hasError('subject') ? formState.errors.subject[0] : null
+                  }
+                  label="Subject"
+                  name="subject"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.subject || ''}
+                  variant="outlined"
+                />
+                <TextField
+                  className={classes.textField}
+                  error={hasError('body')}
+                  fullWidth
+                  helperText={
+                    hasError('body') ? formState.errors.body[0] : null
+                  }
+                  label="Body"
+                  name="body"
+                  onChange={handleChange}
+                  type="text"
+                  value={formState.values.body || ''}
+                  variant="outlined"
+                  multiline = {true}                />
+                <Button onClick={handleClose} color="primary">
+                Cancel
+              </Button>
+                <Button
+                  className={classes.signUpButton}
+                  color="primary"
+                  disabled={!formState.isValid}
+                  type="submit"
+                  variant="contained"
+                >
+                  Send
+                </Button>
+              </form>
+            </div>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 };
 
 TemplateCard.propTypes = {
   className: PropTypes.string,
-  template: PropTypes.object.isRequired
+  template: PropTypes.object.isRequired,
 };
 
 export default TemplateCard;
