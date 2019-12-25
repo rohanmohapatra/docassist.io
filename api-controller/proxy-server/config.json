@@ -1,0 +1,24 @@
+{
+    "routes": [
+      {
+        "route": "/api/templates/",
+        "address": "http://localhost:5001/api/templates",
+        "app" : "flask"
+      },
+      {
+        "route": "/api/data/",
+        "address": "http://localhost:5001/api/data",
+        "app" : "flask"
+      },
+      {
+        "route" : "/api/email/",
+        "address": "http://localhost:5001/api/email",
+        "app" : "flask"
+      },
+      {
+        "route" : "/api/generate/",
+        "address": "http://localhost:5002/api/generate",
+        "app" : "express"
+      }
+    ]
+  }
