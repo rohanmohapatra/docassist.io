@@ -115,10 +115,10 @@ def listAllClients():
         return Response(status=500)
     return jsonify(client_list)
 
-@data_view.route("/docs", methods=['GET'])
+@data_view.route("/docs/", methods=['GET'])
 @cross_origin()
 def completedDocs():
-    path = os.path.abspath('output/user_a/docx')
+    path = os.path.abspath('../scripts/output/user_a/docx')
     with os.scandir(path) as ls:
         docxFiles = [{
             "filename": entry.name,
@@ -131,10 +131,10 @@ def completedDocs():
     return jsonify(docxFiles)
 
 
-@data_view.route("/download/<name>", methods=['GET'])
+@data_view.route("/download/<name>/", methods=['GET'])
 @cross_origin()
 def downloadDocs(name):
-    path = './output/user_a/'
+    path = '../scripts/output/user_a/'
 
     fileFormt = name.split('.')[1]
     print(name.split('.'))

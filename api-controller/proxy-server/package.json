@@ -1,0 +1,16 @@
+{
+  "name": "reverse-proxy-api",
+  "version": "1.0.0",
+  "description": "Creates a Reverse Prxy to handele flask and express from same port",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^0.20.0",
+    "save": "^2.4.0"
+  }
+}

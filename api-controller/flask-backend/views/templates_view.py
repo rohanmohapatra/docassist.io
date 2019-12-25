@@ -19,7 +19,7 @@ from html2docx import html2docx
 
 templates_view = Blueprint('templates_view',__name__)
 
-@templates_view.route("/")
+@templates_view.route("/", methods=['GET'])
 def health_check():
     print("Working")
     return Response(status=200)
