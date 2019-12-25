@@ -12,7 +12,6 @@ if os.name == 'nt':
 
 def get_default_tags(docx_object, template_folder):
 	default_tags = {'page_break': RichText('\f')}
-
 	directory = os.fsencode(template_folder)
 	for docx_template in os.listdir(directory):
 		filename = os.fsdecode(docx_template)
@@ -36,7 +35,7 @@ def make_pdf(in_file, out_file):
 	word.Quit()
 
 def fill_subdocs(docx_object, file_name, client_name):
-	default_tags = get_default_tags(docx_object, "fixed_templates")
+	default_tags = get_default_tags(docx_object, "./fixed_templates")
 	docx_object.render(default_tags)
 	temp_doc_location = "outputs/temp_" + client_name + '_' + file_name
 	docx_object.save(temp_doc_location)
@@ -56,8 +55,8 @@ def generate_doc(template_location, context):
 	docx_object = DocxTemplate(template_location)
 	file_name = template_location.split('/')[-1]
 	client_name = context["jmf_client_name"]
-
-	default_tags = get_default_tags(docx_object, "fixed_templates")
+	print("Hello ",os.path.abspath(os.path.dirname(__file__)))
+	default_tags = get_default_tags(docx_object, os.path.abspath(os.path.dirname(__file__)) + "/fixed_templates")
 	context.update(default_tags)
 
 	'''
@@ -81,7 +80,7 @@ def generate_doc(template_location, context):
 			print("R:",r.xml)
 		print(para.text)
 	'''
-	gen_doc_location = "output/user_a/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
+	gen_doc_location = os.path.abspath(os.path.dirname(__file__))+"/output/user_a/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
 	#docx_object.get_docx().save(gen_doc_location)
 	docx_object.save(gen_doc_location)
 
@@ -101,10 +100,10 @@ if __name__=="__main__":
 		print(args.data_location)
 		client_data = json.load(json_file)
 		gen_doc_loc = generate_doc(args.template_location, client_data)
-
-		print("word doc generated")
+		print("word doc generated at ", gen_doc_loc)
 		pdf_name = gen_doc_loc.split('.')[0]+'.pdf'
-		pdf_name = pdf_name.replace('docx', 'pdf')
+		print(pdf_name)
+		pdf_name = gen_doc_loc.replace('docx', 'pdf')
 		print(pdf_name, os.path.abspath(pdf_name))
 		# print(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
 		if os.name == 'nt':
@@ -113,8 +112,10 @@ if __name__=="__main__":
 			#print('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(pdf_name)+'"')
 			if _platform == "linux" or _platform == "linux2":
 			# linux
-				subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+'output/user_a/pdf'+'"',shell=True)
+				subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(os.path.dirname(__file__))+'/output/user_a/pdf'+'"',shell=True)
 			elif _platform == "darwin":
 			# MAC OS X
 				print("Support not yet added")
+
+		print("Document Name :",gen_doc_loc.split("/")[-1].split(".")[0])
 
