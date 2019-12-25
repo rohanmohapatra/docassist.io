@@ -11,3 +11,6 @@
  web-app/node_modules
  
  /docassis_venv/*
+
+ /api-controller/__pycache__
+ 
