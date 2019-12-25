@@ -32,7 +32,7 @@ app.post('/api/generate/', function(request, response) {
             //console.log(stdout.split("\n"));
             var output = stdout.split("\n")
             var documentName = output[output.length -2].split(":")[1];
-            dataaccess.add_generated_document(documentName, client_id).then(function(){
+            dataaccess.add_generated_document(documentName.trim(), client_id).then(function(){
                 console.log("Added to Collection")
             });
             console.log("Completed");

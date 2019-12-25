@@ -76,6 +76,7 @@ const ViewTemplates = props => {
           ))}
         </Grid>
       </div>
+      {false &&
       <div className={classes.pagination}>
         <Typography variant="caption">1-6 of 20</Typography>
         <IconButton>
@@ -85,6 +86,7 @@ const ViewTemplates = props => {
           <ChevronRightIcon />
         </IconButton>
       </div>
+      }
     </div>
   );
 };

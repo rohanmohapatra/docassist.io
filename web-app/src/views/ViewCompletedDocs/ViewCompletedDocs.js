@@ -36,7 +36,7 @@ const ViewTemplates = props => {
   useEffect(() => {
     const fetchData = async () => {
         var host = 'localhost'
-        var apiBaseUrl = '/api/data/docs';
+        var apiBaseUrl = '/api/data/generated_docs_list';
         var apiBasePort = '5000';
         const result = await axios({
             url: `http://${host}:${apiBasePort}${apiBaseUrl}`,
@@ -78,16 +78,6 @@ const ViewTemplates = props => {
         </Grid>
        {emstatus && <SuccessBar open={true} />}
       </div>
-      <div className={classes.pagination}>
-        <Typography variant="caption">1-6 of 20</Typography>
-        <IconButton>
-          <ChevronLeftIcon />
-        </IconButton>
-        <IconButton>
-          <ChevronRightIcon />
-        </IconButton>
-      </div>
-      
     </div>
   );
 };

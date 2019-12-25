@@ -23,7 +23,7 @@ module.exports = {
     add_generated_document: function(document_name, client_id) {
         return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
             let collection = db.db('docassist').collection('generated');
-            return collection.insertOne({document_name: document_name, client_id:client_id});
+            return collection.insertOne({document_name: document_name, client_id:client_id, time_created: parseInt(new Date().getTime() / 1000)});
         }).then(function(){
         })
     }

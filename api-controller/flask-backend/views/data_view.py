@@ -1,7 +1,7 @@
 from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from dataccess.data_setfunctions import add_client_data
-from dataccess.data_getfunctions import get_all_clients, get_client_by_id
+from dataccess.data_getfunctions import get_all_clients, get_client_by_id, get_all_docs
 from flask_cors import CORS, cross_origin
 import json
 import time
@@ -136,6 +136,19 @@ def completedDocs():
         }
             for entry in ls if entry.is_file()]
     print(docxFiles)
+    return jsonify(docxFiles)
+
+@data_view.route("/generated_docs_list/", methods=['GET'])
+@cross_origin()
+def generated_docs():
+    result = get_all_docs()
+    docxFiles = [{
+            "filename": entry["document_name"],
+            "createdTime": entry["time_created"],
+            "docLink": "http://localhost:5000/api/data/download/"+entry["document_name"]+'.docx',
+            "pdfLink": "http://localhost:5000/api/data/download/"+entry["document_name"]+'.pdf'
+        }
+            for entry in result]
     return jsonify(docxFiles)
 
 

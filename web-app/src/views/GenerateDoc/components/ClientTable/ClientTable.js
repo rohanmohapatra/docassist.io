@@ -74,7 +74,8 @@ const ClientTable = props => {
         return client_obj ;                                 // return new object jasper object
       })
       //setGenerateStatus({client_id : "Generating Data ..."});
-      axios.post("http://localhost:5000/api/data/upload?tempn="+templateName+"&client_id="+client_id, {})
+      var data = {template_name: templateName, client_id: client_id}
+      axios.post("http://localhost:5000/api/generate/", data)
       .then(function(response){
         setGenerateStatus(prevState => {
             let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper

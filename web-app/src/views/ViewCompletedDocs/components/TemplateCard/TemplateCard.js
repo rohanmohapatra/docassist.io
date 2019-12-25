@@ -224,7 +224,7 @@ const TemplateCard = props => {
           component="p"
           className={classes.version}
         >
-          Created: {(new Date(template.createdTime/1000000)).toString()}
+          Created: {(new Date(template.createdTime*1000)).toString()}
         </Typography>
         
       </CardContent>

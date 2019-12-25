@@ -10,3 +10,7 @@ def get_client_by_id(id):
 		{"_id":id}
 	)
 	return result
+
+def get_all_docs():
+	result = mongo.db.generated.find()
+	return list(result)
