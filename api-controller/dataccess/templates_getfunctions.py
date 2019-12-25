@@ -12,3 +12,10 @@ def get_template_by_id(template_id):
     templates_collection = mongo.db.templates
     result = templates_collection.find_one({"_id":template_id})
     return result
+
+def get_jinja_fields_by_id(template_id):
+	result = mongo.db.templates.find_one(
+		{"_id": template_id},
+		projection = {"jinja_fields":True}
+	)
+	return result

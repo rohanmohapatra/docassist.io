@@ -6,8 +6,8 @@ import time
 import datetime
 import os
 from flask import current_app as app
-from dataccess.templates_setfunctions import add_template_to_db
-from dataccess.templates_getfunctions import get_templates_for_user, get_template_by_id
+from dataccess.templates_setfunctions import add_template_to_db, set_jinja_fields
+from dataccess.templates_getfunctions import get_templates_for_user, get_template_by_id, get_jinja_fields_by_id
 from flask_cors import CORS, cross_origin
 from utils.aes import encrypt,decrypt
 
@@ -15,7 +15,7 @@ from utils.utils import allowed_file_extensions
 from werkzeug.utils import secure_filename
 
 import mammoth
-from html2docx import html2docx
+#from html2docx import html2docx
 
 templates_view = Blueprint('templates_view',__name__)
 
@@ -44,12 +44,23 @@ def upload_template():
         if template and allowed_file_extensions(template.filename, ALLOWED_EXTENSIONS):
             template_filename = secure_filename(template.filename)
             try:
-                add_template_to_db(template_filename,str(os.path.join(app.config['UPLOAD_FOLDER'], template_filename)))
+                template_id = add_template_to_db(template_filename,str(os.path.join(app.config['UPLOAD_FOLDER'], template_filename)))
                 template.save(os.path.join(app.config['UPLOAD_FOLDER'], template_filename))
             except Exception as e:
-                print(e)
+                print("Error:",e)
+                print("Something went wrong")
                 return Response(status=409)
-            
+
+            # Now add the jinja-fields in the template to the template document in MongoDB
+            template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
+            modified_count = set_jinja_fields(template_location, template_id)
+
+            if(modified_count):
+                print("Added jinja-fields for",str(modified_count),"template")
+                return Response(status=200)
+            else:
+                print("Failed to add jinja fields to mongo.db.template")
+                return Response(status=409)                  
 
         else:
             return Response('["file types not supported"]', status=400)
@@ -80,6 +91,7 @@ def edit_templates(template_id):
         #print(html)
         return html
 
+'''
 @templates_view.route('/<template_id>/save/',methods=['POST'])
 @cross_origin()
 def save_templates(template_id):
@@ -94,3 +106,10 @@ def save_templates(template_id):
         fp.write(buf.getvalue())
         add_template_to_db(result["filename"],location)
     return Response(status=200)
+'''
+
+@templates_view.route('/<template_id>/jinja_fields/',methods=['GET'])
+@cross_origin()
+def get_required_jinja_fields(template_id):
+    jinja_fields = get_jinja_fields_by_id(template_id)
+    return jinja_fields
