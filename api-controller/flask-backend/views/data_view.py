@@ -24,6 +24,11 @@ def upload_data():
     ALLOWED_EXTENSIONS = set(['json'])
     if request.method == 'POST':
         # print(request.files.to_dict(flat=False))
+        ''' Backend Revamped
+
+        Upload and Generate Seperated
+        Please refer older commits
+
 
         templateName = request.args.get('tempn')
         print(templateName)
@@ -50,6 +55,9 @@ def upload_data():
                 
         else:
             print("No client_id in request, generating based on uploaded data")
+        '''
+
+
 
         # Check if my inout has those fields
         if 'data' not in request.files:
@@ -90,8 +98,8 @@ def upload_data():
                 data.save(os.path.join(
                     app.config['DATA_UPLOAD_FOLDER'], data_filename))
 
-                subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
-                                templateName, 'data/user_a/'+data_filename])
+                #subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
+                #                templateName, 'data/user_a/'+data_filename])
 
             except Exception as e:
                 print(e)

@@ -7,8 +7,8 @@ app = Flask(__name__)
 cors = CORS(app, resources={r'/api/*': {"origins": 'http://localhost:5000'}})
 
 #Global Variables
-UPLOAD_FOLDER = os.getcwd() + '/template/user_a'
-DATA_UPLOAD_FOLDER = os.getcwd() + '/data/user_a'
+UPLOAD_FOLDER = os.getcwd() + '/../scripts/template/user_a'
+DATA_UPLOAD_FOLDER = os.getcwd() + '/../scripts/data/user_a'
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/docassist"
 app.secret_key = "secret key"
