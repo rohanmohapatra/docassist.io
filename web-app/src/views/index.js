@@ -6,3 +6,4 @@ export { default as GenerateDoc } from './GenerateDoc';
 export { default as EditTemplate } from './EditTemplate';
 export { default as ViewCompletedDocs } from './ViewCompletedDocs';
 export { default as BulkGenerate } from './BulkGenerate';
+export { default as WriteYourOwnTemplate } from './WriteYourOwnTemplate';

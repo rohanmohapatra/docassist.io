@@ -11,7 +11,8 @@ import {
     GenerateDoc as GenerateDocView,
     EditTemplate as EditTemplateView,
     ViewCompletedDocs as ViewCompletedDocsView,
-    BulkGenerate as BulkGenerateView
+    BulkGenerate as BulkGenerateView,
+    WriteYourOwnTemplate as WriteYourOwnTemplateView
   } from './views';
 
 const Routes = () => {
@@ -65,6 +66,12 @@ const Routes = () => {
                 exact
                 layout={TemplateLayout}
                 path='/upload/data'
+            />
+            <RouteWithLayout
+            component={WriteYourOwnTemplateView}
+            exact
+            layout = {MinimalLayout}
+            path='/template/create'
             />
         </Switch>
 

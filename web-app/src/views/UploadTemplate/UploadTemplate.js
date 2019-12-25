@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Link as RouterLink, withRouter } from 'react-router-dom';
+import { Grid, Typography, Link } from '@material-ui/core';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 
@@ -43,6 +44,19 @@ const UploadTemplate = () => {
               Upload your templates here (You can upload multiple templates)
             </Typography>
             <FilePond allowMultiple={true} server="http://localhost:5000/api/templates/upload/" name="template"/>
+            <Typography
+                  color="textSecondary"
+                  variant="body1"
+                >
+                  Want to create using our all new editor?{' '}
+                  <Link
+                    component={RouterLink}
+                    to="/template/create"
+                    variant="h6"
+                  >
+                    Create Now
+                  </Link>
+                </Typography>
           </div>
         </Grid>
       </Grid>

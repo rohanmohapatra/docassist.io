@@ -25,6 +25,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import DescriptionIcon from '@material-ui/icons/Description';
 import EmailIcon from '@material-ui/icons/Email';
+import EditIcon from '@material-ui/icons/Edit';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import axios from 'axios';
@@ -250,6 +251,9 @@ const TemplateCard = props => {
               </IconButton>
               <IconButton onClick={handleEmail}>
                 <EmailIcon className={classes.email}/>
+              </IconButton>
+              <IconButton href={"/document/edit/"+template.filename}>
+                <EditIcon />
               </IconButton>
               
             </Typography>
