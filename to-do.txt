@@ -12,3 +12,4 @@
 9) give "create template" option in GUI
 10) revamp UI
 11) user management (sign up/login)
+12) take them to "view templates" might hamper experience, please recheck.
