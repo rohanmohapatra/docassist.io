@@ -102,7 +102,7 @@ class WriteYourOwnTemplate extends Component{
   }
   handleSave(){
       var self = this;
-      var data = {filename : self.state.documentName, html: self.state.html}
+      var data = {filename : self.state.documentName+'.docx', html: self.state.html}
       axios.post("http://localhost:5000/api/templates/create/",data)
       .then(function(response){
           if(response.status == 200){
