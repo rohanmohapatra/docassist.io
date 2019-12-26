@@ -27,8 +27,6 @@ def make_pdf(in_file, out_file):
 	wdFormatPDF = 17
 
 	word = comtypes.client.CreateObject('Word.Application')
-	print(in_file)
-	print(out_file)
 	doc = word.Documents.Open(in_file)
 	doc.SaveAs(out_file, FileFormat=wdFormatPDF)
 	doc.Close()
@@ -43,11 +41,8 @@ def fill_subdocs(docx_object, file_name, client_name):
 
 def fill_client_data(docx_object, file_name, client_name, context):
 	docx_object.render(context)
-	#gen_doc_location = "outputs/" + client_name + '_' + str(int(time.time())) + '_' + file_name
-	#docx_object.save(gen_doc_location)
-	#return gen_doc_location
 
-def generate_doc(template_location, context):
+def generate_doc(template_location, context, username):
 	"""
 		Replaces the fields in data_dict with corresponding values.
 	"""
@@ -55,37 +50,16 @@ def generate_doc(template_location, context):
 	docx_object = DocxTemplate(template_location)
 	file_name = template_location.split('/')[-1]
 	client_name = context["jmf_client_name"]
-	print("Hello ",os.path.abspath(os.path.dirname(__file__)))
+
 	default_tags = get_default_tags(docx_object, os.path.abspath(os.path.dirname(__file__)) + "/fixed_templates")
 	context.update(default_tags)
 
-	'''
-	temp_doc_location = fill_client_data(docx_object, file_name, client_name, context)
-	docx_object = DocxTemplate(temp_doc_location)
-
-	fill_client_data(docx_object, file_name, client_name, context)
-	fill_client_data(docx_object, file_name, client_name, context)
-	'''
-
 	docx_object.render(context)
 	docx_object.render(context)
-	#g = (docx_object.get_headers_footers_xml("http://schemas.openxmlformats.org/officeDocument/2006/relationships/header"))
-	#print(''.join(g))
-	'''
-	print("---------------------------------------------------------")
-	print(docx_object.get_xml())
-	for para in docx_object.paragraphs:
-		print(para._p.r_lst)
-		for r in para._p.r_lst:
-			print("R:",r.xml)
-		print(para.text)
-	'''
-	gen_doc_location = os.path.abspath(os.path.dirname(__file__))+"/output/user_a/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
-	#docx_object.get_docx().save(gen_doc_location)
+
+	gen_doc_location = os.path.abspath(os.path.dirname(__file__))+"/output/"+username+"/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
 	docx_object.save(gen_doc_location)
 
-	#gen_doc_location = fill_client_data(docx_object, file_name, client_name, context)
-	#os.remove(temp_doc_location)
 	return gen_doc_location
 
 if __name__=="__main__":
@@ -94,27 +68,30 @@ if __name__=="__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('template_location', help="Enter location of template.", type=str)
 	parser.add_argument('data_location', help="Enter location of data dictionary.", type=str)
+	parser.add_argument('username', nargs='?', default="user_a", help="Enter username for whom document is being generated.", type=str)
 	args = parser.parse_args()
 	
 	with open(args.data_location) as json_file:
-		print(args.data_location)
+		print("username:",args.username)
+
+		print("Location of client data for docgen",args.data_location)
 		client_data = json.load(json_file)
-		gen_doc_loc = generate_doc(args.template_location, client_data)
+
+		gen_doc_loc = generate_doc(args.template_location, client_data, args.username)
 		print("word doc generated at ", gen_doc_loc)
-		pdf_name = gen_doc_loc.split('.')[0]+'.pdf'
-		print(pdf_name)
+
 		pdf_name = gen_doc_loc.replace('docx', 'pdf')
-		print(pdf_name, os.path.abspath(pdf_name))
-		# print(os.path.abspath(gen_doc_loc), 'output/user_a/pdf/'+(pdf_name))
+		print("pdf location:",pdf_name)
+
 		if os.name == 'nt':
 			make_pdf(os.path.abspath(gen_doc_loc), os.path.abspath(pdf_name))
 		elif os.name == 'posix':
-			#print('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(pdf_name)+'"')
-			if _platform == "linux" or _platform == "linux2":
 			# linux
-				subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(os.path.dirname(__file__))+'/output/user_a/pdf'+'"',shell=True)
-			elif _platform == "darwin":
+			if _platform == "linux" or _platform == "linux2":
+				subprocess.check_call('/usr/lib/libreoffice/program/soffice --headless --convert-to pdf "' + os.path.abspath(gen_doc_loc)+'" --outdir "'+os.path.abspath(os.path.dirname(__file__))+'/output/'+args.username+'/pdf'+'"',shell=True)
+
 			# MAC OS X
+			elif _platform == "darwin":
 				print("Support not yet added")
 
 		print("Document Name :",gen_doc_loc.split("/")[-1].split(".")[0])
