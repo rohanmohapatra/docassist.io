@@ -34,7 +34,7 @@ mongoose.set('debug', true);
 
 //Error handlers & middlewares
 if(!isProduction) {
-  app.use((err, req, res) => {
+  app.use((err, req, res, next) => {
     res.status(err.status || 500);
 
     res.json({
@@ -46,7 +46,14 @@ if(!isProduction) {
   });
 }
 
-app.use((err, req, res) => {
+// Passport config
+require('./config/passport');
+
+// Models and Routes
+require('./models/User');
+app.use(require('./routes'));
+
+app.use((err, req, res, next) => {
     res.status(err.status || 500);
   
     res.json({
