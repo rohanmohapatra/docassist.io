@@ -20,6 +20,8 @@ var temp_json = "../scripts/temp.json"
 app.post('/api/generate/', function(request, response) {
     var template_name = request.body.template_name;
     var client_id = request.body.client_id;
+    //var currency = request.body.currency;
+    //var date_format = request.body.date_format;
     
     dataaccess.get_client_by_id(client_id)
     .then(function(client_data){

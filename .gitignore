@@ -1,10 +1,11 @@
  __pycache__/
- *.pyc
+*.pyc
 
- api-controller/__pycache__/
- api-controller/dataccess/__pycache__/
- api-controller/utils/__pycache__/
- api-controller/views/__pycache__/
+ api-controller/flask-backend/__pycache__/
+ api-controller/flask-backend/dataccess/__pycache__/
+ api-controller/flask-backend/utils/__pycache__/
+ api-controller/flask-backend/views/__pycache__/
+ api-controller/mongo_data/ 
  api-controller/template/
  api-controller/data/
 

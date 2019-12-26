@@ -10,11 +10,15 @@ import sys
 if os.name == 'nt': 
 	import comtypes.client
 
-def get_default_tags(docx_object, template_folder):
+def get_default_tags(template_file_name, docx_object, template_folder):
+	print("get_default_tags: template_file_name:",template_file_name)
+	print("fixed template folder:",template_folder)
 	default_tags = {'page_break': RichText('\f')}
 	directory = os.fsencode(template_folder)
 	for docx_template in os.listdir(directory):
 		filename = os.fsdecode(docx_template)
+		if filename==template_file_name:
+			continue
 		subdoc_name = filename.split('.')[0]	# if filename is temp.docx, subdoc_name is temp
 
 		default_tags[subdoc_name] = docx_object.new_subdoc(template_folder+"/"+filename)
@@ -51,7 +55,7 @@ def generate_doc(template_location, context, username):
 	file_name = template_location.split('/')[-1]
 	client_name = context["jmf_client_name"]
 
-	default_tags = get_default_tags(docx_object, os.path.abspath(os.path.dirname(__file__)) + "/fixed_templates")
+	default_tags = get_default_tags(file_name, docx_object, os.path.abspath(os.path.dirname(__file__)) + "/template/"+username+"/")
 	context.update(default_tags)
 
 	docx_object.render(context)

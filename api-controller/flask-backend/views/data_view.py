@@ -57,8 +57,6 @@ def upload_data():
             print("No client_id in request, generating based on uploaded data")
         '''
 
-
-
         # Check if my inout has those fields
         if 'data' not in request.files:
             print('data not in request')

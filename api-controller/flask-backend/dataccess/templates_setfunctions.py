@@ -18,7 +18,7 @@ def add_template_to_db(filename, location, username='user_a'):
         template_id = templates_collection.find_one_and_update(
             filter={"filename": filename},
             update={"$inc": {"version": 1}},
-            projection={"version": True, "_id": False},
+            projection={"version": True, "_id": True},
             upsert=False,
             return_document=ReturnDocument.AFTER,
         )["_id"]
