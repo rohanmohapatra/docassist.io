@@ -26,8 +26,6 @@ router.post('/', auth.optional, (req, res, next) => {
 
     Users.findOne({ email: user.email })
         .then(foundUser => {
-            console.log('foundUser', foundUser);
-
             if (!foundUser) {
                 // Email not registered
                 const finalUser = new Users(user);
@@ -67,8 +65,6 @@ router.post('/login', auth.optional, (req, res, next) => {
     }
 
     return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-
-        console.log('from users.js:', err, passportUser, info);
         if (err) {
             return next(err);
         }
