@@ -2,6 +2,7 @@ from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from dataccess.data_setfunctions import add_client_data
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id
+from dataccess.media_getfunctions import get_generated_document_by_filename, get_generated_document_by_id
 from flask_cors import CORS, cross_origin
 import json
 import time
@@ -14,6 +15,9 @@ import subprocess
 from utils.bulk_fill import bulk_fill
 from utils.utils import allowed_file_extensions
 from werkzeug.utils import secure_filename
+import mammoth
+
+from html2docx import html2docx
 
 media_view = Blueprint('media_view', __name__)
 
@@ -34,4 +38,33 @@ def downloadDocs(name):
     else:
         print('sending nothing:', name)
         return Response(status=404)
+
+@media_view.route('/<generated_id>/edit/',methods=['GET'])
+@cross_origin()
+def edit_generated_doc(generated_id):
+    location = "../scripts/output/user_a/docx/"
+    result = get_generated_document_by_id(generated_id)
+    print(result)
+    with open(location+result["document_name"]+'.docx', "rb") as docx_file:
+        result = mammoth.convert_to_html(docx_file)
+        html = result.value # The generated HTML
+        #print(html)
+        return html
+
+
+
+
+@media_view.route('/<generated_id>/save/',methods=['POST'])
+@cross_origin()
+def save_generated_doc(generated_id):
+    location = "../scripts/output/user_a/docx/"
+    json_data = request.get_json(force=True)
+    #print(json_data)
+    html = json_data["html"]
+    buf = html2docx(html, title="Edited Document")
+    result = get_generated_document_by_id(generated_id)
+    #print(location)
+    with open(location+result["document_name"]+".docx", "wb") as fp:
+        fp.write(buf.getvalue())
+    return Response(status=200)
 

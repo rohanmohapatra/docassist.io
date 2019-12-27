@@ -19,6 +19,11 @@
         "route" : "/api/generate/",
         "address": "http://localhost:5002/api/generate",
         "app" : "express"
+      },
+      {
+        "route" : "/api/media/",
+        "address": "http://localhost:5001/api/media",
+        "app" : "flask"
       }
     ]
   }
