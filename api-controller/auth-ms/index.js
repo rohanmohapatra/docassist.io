@@ -21,11 +21,16 @@ app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'docassist-passport-secret', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(session({
+  secret: 'docassist-passport-secret',
+  cookie: { maxAge: 60000 },
+  resave: false,
+  saveUninitialized: false,
+}));
 
 
-if(!isProduction) {
-    app.use(errorHandler());
+if (!isProduction) {
+  app.use(errorHandler());
 }
 
 //Configure Mongoose
@@ -33,7 +38,7 @@ mongoose.connect('mongodb://localhost/docassist-authms', { useNewUrlParser: true
 mongoose.set('debug', true);
 
 //Error handlers & middlewares
-if(!isProduction) {
+if (!isProduction) {
   app.use((err, req, res, next) => {
     res.status(err.status || 500);
 
@@ -54,14 +59,14 @@ require('./models/User');
 app.use(require('./routes'));
 
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-  
-    res.json({
-      errors: {
-        message: err.message,
-        error: {},
-      },
-    });
+  res.status(err.status || 500);
+
+  res.json({
+    errors: {
+      message: err.message,
+      error: {},
+    },
   });
-  
-app.listen(8000, () => console.log('Server running on http://localhost:8000/'));
+});
+
+app.listen(5003, () => console.log('Server running on http://localhost:5003/'));
