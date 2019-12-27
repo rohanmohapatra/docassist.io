@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { AppBar, Toolbar } from '@material-ui/core';
 import theme from '../../../../theme';
+import LoginComp from './../../../../components/login';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -36,6 +37,7 @@ const Topbar = props => {
             height='70'
           />
         </RouterLink>
+        <LoginComp />
       </Toolbar>
     </AppBar>
   );
