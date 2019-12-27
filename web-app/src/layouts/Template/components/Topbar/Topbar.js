@@ -10,6 +10,9 @@ const useStyles = makeStyles(() => ({
   root: {
     //boxShadow: 'none'
     backgroundColor: theme.palette.navbar.dark,
+  },
+  login_avatar: {
+    float: 'right'
   }
 }));
 
