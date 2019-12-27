@@ -1,38 +1,57 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Modal, IconButton, Paper} from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-
-
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
-
-    return {
-        top: `${top}%`,
-        left: `${left}%`,
-        transform: `translate(-${top}%, -${left}%)`,
-    };
-}
+import {
+    Modal,
+    IconButton,
+    Paper,
+    Container,
+    CssBaseline,
+    Avatar,
+    Typography,
+    TextField,
+    Checkbox,
+    Button,
+    Grid,
+    Link,
+    FormControlLabel,
+} from '@material-ui/core';
+import { AccountCircle } from '@material-ui/icons';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Google from './../../icons/Google';
 
 const useStyles = makeStyles(theme => ({
-    paper: {
+    paperHolder: {
         position: 'absolute',
         width: 400,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+        top: `10%`,
+        left: `50%`,
+        transform: `translate(-50%, -10%)`,
+    },
+    paper: {
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    avatar: {
+        margin: theme.spacing(1),
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(1),
+    },
+    submit: {
+        margin: theme.spacing(3, 0, 2),
     },
 }));
 const LoginComp = props => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
-    const [modalStyle] = React.useState(getModalStyle);
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => {
@@ -54,12 +73,69 @@ const LoginComp = props => {
                 open={open}
                 onClose={handleClose}
             >
-                <div style={modalStyle} className={classes.paper}>
-                    <h2 id="simple-modal-title">Text in a modal</h2>
-                    <p id="simple-modal-description">
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </p>
-                </div>
+                <Paper className={classes.paperHolder}>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <div className={classes.paper}>
+                            <Avatar className={classes.avatar}>
+                                <LockOutlinedIcon />
+                            </Avatar>
+                            <Typography component="h1" variant="h5">
+                                Sign in
+                            </Typography>
+                            <form className={classes.form} noValidate>
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                />
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.submit}
+                                >
+                                    Sign In
+                                </Button>
+                                <Grid container>
+                                    <Grid item xs>
+                                    </Grid>
+                                    <Grid item>
+                                        <Link href="#" variant="body2">
+                                            {"Don't have an account? Sign Up"}
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                            </form>
+                        </div>
+                    </Container>
+                    <IconButton>
+                        <Google />
+                    </IconButton>
+
+                </Paper>
             </Modal>
         </div>
     );
