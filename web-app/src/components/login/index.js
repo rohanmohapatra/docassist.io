@@ -123,7 +123,7 @@ const LoginComp = props => {
                                     <Grid item xs>
                                     </Grid>
                                     <Grid item>
-                                        <Link href="#" variant="body2">
+                                        <Link href="#">
                                             {"Don't have an account? Sign Up"}
                                         </Link>
                                     </Grid>
@@ -134,6 +134,11 @@ const LoginComp = props => {
                     <IconButton>
                         <Google />
                     </IconButton>
+                    Sign up with Google
+
+                    <Button variant="contained" disableElevation>
+                        <Google /> Sign up with Google
+                    </Button>
 
                 </Paper>
             </Modal>
