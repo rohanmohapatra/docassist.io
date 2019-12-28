@@ -32,7 +32,7 @@ module.exports = {
     	var allowed_date_formats = ["MM-DD-YYYY", "MM/DD/YYYY", "M-DD-YYYY", "M/DD/YYYY", "MM-D-YYYY", "MM/D/YYYY","M-D-YYYY", "M/D/YYYY",
     	"DD-MM-YYYY","DD/MM/YYYY", "D-MM-YYYY", "D/MM/YYYY", "DD-M-YYYY", "DD/M/YYYY", "D-M-YYYY", "D/M/YYYY",
     	"DD-MM", "DD/MM"]
-    	var formatter = new Intl.DateTimeFormat("en-IN");
+    	var formatter = new Intl.DateTimeFormat(country_locale);
     	console.log("apply_date_localization");
     	Object.keys(client_data).forEach(function(key) {
 		    if(key.slice(-5)==="_date"){
