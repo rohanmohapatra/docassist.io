@@ -63,37 +63,37 @@ const SignupForm = props => {
     });
 
     const handleSubmit = () => {
-        if(formState.password !== formState.confirmPassword) {
+        if (formState.password !== formState.confirmPassword) {
             alert('password and confirm password not matching');
         } else {
             fetch('http://localhost:5000/api/users', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              user: formState,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: formState,
+                })
             })
-          })
-          .then(resp => {
-              if(resp.status !== 200) {
-                  const error = new Error(resp.statusText);
-                  error.resp = resp;
-                  throw error;
-              }
-              return resp;
-          })
-          .then(resp => resp.json())
-          .then(console.log)
-          .catch(err => {
-              console.log(err.resp);
+                .then(resp => {
+                    if (resp.status !== 200) {
+                        const error = new Error(resp.statusText);
+                        error.resp = resp;
+                        throw error;
+                    }
+                    return resp;
+                })
+                .then(resp => resp.json())
+                .then(console.log)
+                .catch(err => {
+                    console.log(err.resp);
 
-              if(err.message.toLowerCase() === 'conflict') {
-                  alert('User exists');
-              } else {
-                  alert('Oops! Something went wrong. Try Again');
-              }
-          });
+                    if (err.message.toLowerCase() === 'conflict') {
+                        alert('User exists');
+                    } else {
+                        alert('Oops! Something went wrong. Try Again');
+                    }
+                });
         }
     }
 
@@ -102,10 +102,10 @@ const SignupForm = props => {
             <Typography component="h1" variant="h5">
                 Sign up
             </Typography>
-            <form 
-            className={classes.form}
-            onSubmit={e => e.preventDefault()} 
-            noValidate>
+            <form
+                className={classes.form}
+                onSubmit={e => e.preventDefault()}
+                noValidate>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -170,7 +170,7 @@ const SignupForm = props => {
                 >
                     Sign Up
                 </Button>
-                </form>
+            </form>
         </>
     );
 }
@@ -188,34 +188,41 @@ const LoginForm = props => {
         fetch('http://localhost:5000/api/users/login', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              user: formState,
+                user: formState,
             })
-          })
-          .then(resp => {
-              if(resp.status !== 200) {
-                  const error = new Error(resp.statusText);
-                  error.resp = resp;
-                  throw error;
-              }
-              return resp;
-          })
-          .then(resp => resp.json())
-          .then(console.log)
-          .catch(console.log);
+        })
+            .then(resp => {
+                if (resp.status !== 200) {
+                    const error = new Error(resp.statusText);
+                    error.resp = resp;
+                    throw error;
+                } else {
+                    return resp;
+                }
+
+            })
+            .then(resp => resp.json())
+            .then(json => {
+                if (json) {
+                    Cookies.set('name', json);
+                    console.log(Cookies.get('name'));
+                }
+            })
+            .catch(err => alert(err.message));
     }
-    
+
     return (
         <>
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
-            <form 
-            className={classes.form} 
-            onSubmit={e => e.preventDefault} 
-            noValidate>
+            <form
+                className={classes.form}
+                onSubmit={e => e.preventDefault}
+                noValidate>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -272,12 +279,54 @@ const LoginForm = props => {
     );
 }
 
+const AccountInfoPage = prop => {
+
+}
+
+const LoginAndSignupForms = props => {
+    const classes = useStyles();
+
+    const handleSignupToggleClick = e => {
+        setLocalSignIn(!localSignIn);
+    }
+
+    const [localSignIn, setLocalSignIn] = React.useState(true);
+
+    return (
+        <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    {localSignIn ? <LoginForm /> : <SignupForm />}
+                    <Grid container>
+                        <Grid item xs>
+                        </Grid>
+                        <Grid item>
+                            <Link href="#" onClick={handleSignupToggleClick}>
+                                {localSignIn ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </div>
+                <IconButton>
+                    <Google />
+                </IconButton>
+                Sign up with Google
+    
+            <Button variant="contained">
+                    <Google /> Sign up with Google
+            </Button>
+        </Container>
+    );
+
+}
+
 const LoginComp = props => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [open, setOpen] = React.useState(false);
-
-    const [localSignIn, setLocalSignIn] = React.useState(true);
 
     const handleOpen = () => {
         setOpen(true);
@@ -286,10 +335,6 @@ const LoginComp = props => {
     const handleClose = () => {
         setOpen(false);
     };
-
-    const handleSignupToggleClick = e => {
-        setLocalSignIn(!localSignIn);
-    }
 
     return (
         <div>
@@ -303,32 +348,8 @@ const LoginComp = props => {
                 onClose={handleClose}
             >
                 <Paper className={classes.paperHolder}>
-                    <Container component="main" maxWidth="xs">
-                        <CssBaseline />
-                        <div className={classes.paper}>
-                            <Avatar className={classes.avatar}>
-                                <LockOutlinedIcon />
-                            </Avatar>
-                            {localSignIn ? <LoginForm /> : <SignupForm />}
-                            <Grid container>
-                                <Grid item xs>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="#" onClick={handleSignupToggleClick}>
-                                        {localSignIn ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </Container>
-                    <IconButton>
-                        <Google />
-                    </IconButton>
-                    Sign up with Google
 
-                    <Button variant="contained">
-                        <Google /> Sign up with Google
-                    </Button>
+                    <LoginAndSignupForms />
 
                 </Paper>
             </Modal>
