@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
         top: `10%`,
         left: `50%`,
         transform: `translate(-50%, -10%)`,
+        minHeight: '70%',
     },
     paper: {
         marginTop: theme.spacing(8),
@@ -194,8 +195,8 @@ const LoginForm = props => {
                 user: formState,
             })
         })
-            .then(resp => {
-                if (resp.status !== 200) {
+        .then(resp => {
+            if (resp.status !== 200) {
                     const error = new Error(resp.statusText);
                     error.resp = resp;
                     throw error;
@@ -207,8 +208,8 @@ const LoginForm = props => {
             .then(resp => resp.json())
             .then(json => {
                 if (json) {
-                    Cookies.set('name', json);
-                    console.log(Cookies.get('name'));
+                    Cookies.set('user', json);
+                    console.log(Cookies.get('user'));
                 }
             })
             .catch(err => alert(err.message));
@@ -280,7 +281,14 @@ const LoginForm = props => {
 }
 
 const AccountInfoPage = prop => {
-
+    return (
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <h1>
+                User Logged In
+            </h1>
+        </Container>
+    );
 }
 
 const LoginAndSignupForms = props => {
@@ -327,6 +335,9 @@ const LoginComp = props => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [open, setOpen] = React.useState(false);
+    
+    // to hold state if the user is logged in
+    const [ loggedIn, setLoggedIn ] = React.useState(false);
 
     const handleOpen = () => {
         setOpen(true);
@@ -349,7 +360,7 @@ const LoginComp = props => {
             >
                 <Paper className={classes.paperHolder}>
 
-                    <LoginAndSignupForms />
+                    {loggedIn ? <AccountInfoPage /> :<LoginAndSignupForms />}
 
                 </Paper>
             </Modal>
