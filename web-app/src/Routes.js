@@ -13,7 +13,8 @@ import {
     ViewCompletedDocs as ViewCompletedDocsView,
     BulkGenerate as BulkGenerateView,
     WriteYourOwnTemplate as WriteYourOwnTemplateView,
-    EditCompletedDoc as EditCompletedDocView
+    EditCompletedDoc as EditCompletedDocView,
+    AddClientData as AddClientDataView
   } from './views';
 
 const Routes = () => {
@@ -63,7 +64,7 @@ const Routes = () => {
             />
 
             <RouteWithLayout 
-                component={GenerateDocView}
+                component={AddClientDataView}
                 exact
                 layout={TemplateLayout}
                 path='/upload/data'

@@ -8,3 +8,4 @@ export { default as ViewCompletedDocs } from './ViewCompletedDocs';
 export { default as BulkGenerate } from './BulkGenerate';
 export { default as WriteYourOwnTemplate } from './WriteYourOwnTemplate';
 export { default as EditCompletedDoc } from './EditCompletedDoc';
+export { default as AddClientData } from './AddClientData';

@@ -6,6 +6,8 @@ import { Divider, Drawer } from '@material-ui/core';
 import BackupIcon from '@material-ui/icons/Backup';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import PeopleIcon from '@material-ui/icons/People';
 import { SidebarNav} from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +53,18 @@ const Sidebar = props => {
       title : 'Bulk Generate',
       href: '/bulk/generate',
       icon: <AddToPhotosIcon />
+    },
+    {
+      title : 'Add Client Data',
+      href: '/upload/data',
+      icon: <PersonAddIcon />
+    },
+    {
+      title : 'View Clients',
+      href: '/view/clients',
+      icon: <PeopleIcon />
     }
+
   ];
 
   return (
