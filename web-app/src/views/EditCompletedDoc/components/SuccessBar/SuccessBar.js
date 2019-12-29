@@ -87,8 +87,14 @@ const useStyles2 = makeStyles(theme => ({
 export default function CustomSnackbars(props) {
   
   const classes = useStyles2();
-  const [open, setOpen] = React.useState(props.open);
+  const [open, setOpen] = React.useState(props.open=="success"? true : false);
   useEffect(() => {
+    if(props.open == "success"){
+        setOpen(true);
+    }
+    else{
+        setOpen(false);
+    }
 
   }, [props.open]);
   const handleClick = () => {
@@ -116,7 +122,7 @@ export default function CustomSnackbars(props) {
         <CustomSnackbarContentWrapper
           onClose={handleClose}
           variant="success"
-          message="Documents are being generated. Please visit /view/generated/ for viewing the generated documents"
+          message="Saved Succesfully!"
         />
       </Snackbar>
   );

@@ -35,3 +35,15 @@ def get_all_jinja_fields(doc_location):
 
 def allowed_file_extensions(filename, ALLOWED_EXTENSIONS):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def reshape(src_list, shape):
+	'''
+	shape is a tuple
+	assume (-1,1)
+	'''
+	i=0
+	new_list=[]
+	while i<len(src_list):
+		new_list.append(src_list[i:i+shape[1]])
+		i+=shape[1]
+	return new_list

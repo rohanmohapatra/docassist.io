@@ -2,7 +2,7 @@ from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from dataccess.data_setfunctions import add_client_data
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id
-from dataccess.media_getfunctions import get_generated_document_by_filename, get_generated_document_by_id
+from dataccess.media_getfunctions import get_generated_document_by_filename, get_generated_document_by_id, get_generated_document_status
 from flask_cors import CORS, cross_origin
 import json
 import time
@@ -67,4 +67,15 @@ def save_generated_doc(generated_id):
     with open(location+result["document_name"]+".docx", "wb") as fp:
         fp.write(buf.getvalue())
     return Response(status=200)
+
+@media_view.route('/<generated_id>/status/')
+@cross_origin()
+def stream(generated_id):
+    #result = get_generated_document_by_id(generated_id)
+    def eventStream():
+        while True:
+            # wait for source data to be available, then push it
+            yield 'data: {}\n\n'.format(get_generated_document_status(generated_id))
+    return Response(eventStream(), mimetype="text/event-stream")
+
 

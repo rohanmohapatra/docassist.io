@@ -12,7 +12,8 @@ import {
     EditTemplate as EditTemplateView,
     ViewCompletedDocs as ViewCompletedDocsView,
     BulkGenerate as BulkGenerateView,
-    WriteYourOwnTemplate as WriteYourOwnTemplateView
+    WriteYourOwnTemplate as WriteYourOwnTemplateView,
+    EditCompletedDoc as EditCompletedDocView
   } from './views';
 
 const Routes = () => {
@@ -72,6 +73,12 @@ const Routes = () => {
             exact
             layout = {MinimalLayout}
             path='/template/create'
+            />
+            <RouteWithLayout
+                component={EditCompletedDocView}
+                exact
+                layout={MinimalLayout}
+                path="/document/edit/:generated_id"
             />
         </Switch>
 

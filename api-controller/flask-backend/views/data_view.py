@@ -2,6 +2,7 @@ from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from dataccess.data_setfunctions import add_client_data
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id, get_all_docs
+from dataccess.templates_getfunctions import get_jinja_fields_by_id
 from flask_cors import CORS, cross_origin
 import json
 import time
@@ -12,8 +13,10 @@ from flask_cors import CORS, cross_origin
 import subprocess
 
 from utils.bulk_fill import bulk_fill
-from utils.utils import allowed_file_extensions
+from utils.utils import allowed_file_extensions, reshape
 from werkzeug.utils import secure_filename
+
+from gensim.models import FastText
 
 data_view = Blueprint('data_view', __name__)
 
@@ -141,6 +144,7 @@ def completedDocs():
 def generated_docs():
     result = get_all_docs()
     docxFiles = [{
+            "id" : str(entry["_id"]),
             "filename": entry["document_name"],
             "createdTime": entry["time_created"],
             "docLink": "http://localhost:5000/api/data/download/"+entry["document_name"]+'.docx',
@@ -181,3 +185,39 @@ def bulk_filling():
         print(e)
         return Response(status=400)
     
+
+@data_view.route("/mapping/autopopulate/",  methods=["POST"])
+@cross_origin()
+def autopopulate():
+    json_data = request.get_json(force=True)
+    template_id = json_data["template_id"]
+    client_id = json_data["client_id"]
+
+    template_jinja_fields = get_jinja_fields_by_id(template_id)
+    client_data = get_client_by_id(client_id)
+
+    template_jinja_fields_reshaped = reshape(template_jinja_fields,(-1,1))
+    
+    #Mapping Dictionary
+    mapping = dict()
+
+    #build the fasttext Model 
+    model = FastText(template_jinja_fields_reshaped,size=30, window=5, min_count=1, iter=20)
+
+    #Check if the tag gives value of 1, else get the most similar word
+    for client_info in list(client_data.keys())[1:]:
+        print("Client Data: ",client_info)
+        if(client_info in template_jinja_fields):
+            print("Client_Data_Matched in Jinja")
+            mapping[client_info.strip()] = client_info
+        else:
+            matched_template_field = model.wv.most_similar(client_info)[0][0]
+            print("Intelligence used, Template Matched: ",model.wv.most_similar(client_info)[0])
+            mapping[matched_template_field.strip()] = client_info
+        print("----------------")
+    print(mapping)
+    #print(client_data.keys())
+    return jsonify(mapping)   
+
+
+

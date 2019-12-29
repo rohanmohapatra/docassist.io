@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
@@ -87,8 +87,15 @@ const useStyles2 = makeStyles(theme => ({
 export default function CustomSnackbars(props) {
   
   const classes = useStyles2();
-  const [open, setOpen] = React.useState(props.open);
+  const [open, setOpen] = React.useState(props.open=="error"? true : false);
   useEffect(() => {
+    
+    if(props.open == "error"){
+        setOpen(true);
+    }
+    else{
+        setOpen(false);
+    }
 
   }, [props.open]);
   const handleClick = () => {
@@ -115,8 +122,8 @@ export default function CustomSnackbars(props) {
       >
         <CustomSnackbarContentWrapper
           onClose={handleClose}
-          variant="success"
-          message="Documents are being generated. Please visit /view/generated/ for viewing the generated documents"
+          variant="error"
+          message="Error ! Failed to Save"
         />
       </Snackbar>
   );

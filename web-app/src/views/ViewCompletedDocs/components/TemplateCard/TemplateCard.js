@@ -17,7 +17,8 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-  DialogActions
+  DialogActions,
+  CircularProgress
 } from '@material-ui/core';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import BuildIcon from '@material-ui/icons/Build';
@@ -135,22 +136,37 @@ const TemplateCard = props => {
   const { className, template,emailAddress, ...rest } = props;
 
   const classes = useStyles();
-
+  const [docStatus, setDocStatus] = useState(false);
   const [formState, setFormState] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {}
   });
-
+  
   useEffect(() => {
     const errors = validate(formState.values, schema);
-
+    console.log(template);
     setFormState(formState => ({
       ...formState,
       isValid: errors ? false : true,
       errors: errors || {}
     }));
+    
+    var estream = new EventSource("http://localhost:5000/api/media/"+template.id+"/status/");
+    estream.onmessage = function(event){
+      var status = event.data.split(';')[0];
+      template.filename = event.data.split(';')[1];
+      if(status == "generating")
+        setDocStatus(false);
+      else if (status == "done"){
+        setDocStatus(true);
+        estream.close();
+      }
+       
+    }
+
+
   }, [formState.values]);
 
   const handleChange = event => {
@@ -239,6 +255,9 @@ const TemplateCard = props => {
             className={classes.statsItem}
             item
           >
+            {!docStatus && <Typography display="inline" variant="body2"
+            >Please Wait.. <CircularProgress size={24}/></Typography>}
+            {docStatus &&
             <Typography
               display="inline"
               variant="body2"
@@ -252,11 +271,12 @@ const TemplateCard = props => {
               <IconButton onClick={handleEmail}>
                 <EmailIcon className={classes.email}/>
               </IconButton>
-              <IconButton href={"/document/edit/"+template.filename}>
+              <IconButton href={"/document/edit/"+template.id}>
                 <EditIcon />
               </IconButton>
               
             </Typography>
+            }
           </Grid>
         </Grid>
       </CardActions>
