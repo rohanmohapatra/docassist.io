@@ -1,0 +1,105 @@
+var MongoClient = require('mongodb').MongoClient;
+<<<<<<< HEAD
+var mongo = require('mongodb');
+=======
+var moment = require('moment');
+
+>>>>>>> 8664a9072e6a490b875a603756a9c76f2bb4ce11
+module.exports = {
+    get_client_by_id: function(id) {
+      console.log(id);
+      return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db) {
+        let database  = db.db('docassist');
+        //console.log(database.collection('clients').find());
+        var collection = database.collection('clients');
+        return collection.findOne({"_id":id});
+      }).then(function(item) {
+        return item;
+      });
+    },
+    get_template_by_name: function(name) {
+        return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
+            let collection = db.db('docassist').collection('templates');
+            return collection.findOne({"filename":name});
+        }).then(function(item){
+            return item;
+        })
+    },
+    add_generated_document: function(document_name, client_id) {
+        return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
+            let collection = db.db('docassist').collection('generated');
+            return collection.insertOne({document_name: document_name, client_id:client_id, time_created: parseInt(new Date().getTime() / 1000), status: "generating"});
+        }).then(function(response){
+          return response.insertedId;
+        })
+    },
+<<<<<<< HEAD
+    update_document_status: function(id, document_name) {
+      return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
+        var o_id = new mongo.ObjectID(id);
+        console.log(o_id);
+        let collection = db.db('docassist').collection('generated');
+        return collection.updateOne({_id: o_id}, {$set : {document_name: document_name, status : "done"}});
+    }).then(function(){
+    })
+=======
+    apply_date_localization: function(client_data, country_locale, date_format=null) {
+    	var allowed_date_formats = ["MM-DD-YYYY", "MM/DD/YYYY", "M-DD-YYYY", "M/DD/YYYY", "MM-D-YYYY", "MM/D/YYYY","M-D-YYYY", "M/D/YYYY",
+    	"DD-MM-YYYY","DD/MM/YYYY", "D-MM-YYYY", "D/MM/YYYY", "DD-M-YYYY", "DD/M/YYYY", "D-M-YYYY", "D/M/YYYY",
+    	"DD-MM", "DD/MM"]
+    	var formatter = new Intl.DateTimeFormat(country_locale);
+    	console.log("apply_date_localization");
+
+    	if(!date_format){
+	    	Object.keys(client_data).forEach(function(key) {
+			    if(key.slice(-5)==="_date"){
+			    	console.log(key);
+			    	console.log(client_data[key])
+			    	date_ob = moment(client_data[key], allowed_date_formats);
+			    	if(date_ob._isValid){
+				    	client_data[key] = formatter.format(date_ob._d);
+				    	console.log(client_data[key]);
+				    }
+			    }
+			});
+    	}
+    	else {
+    		Object.keys(client_data).forEach(function(key) {
+			    if(key.slice(-5)==="_date"){
+			    	console.log(key);
+			    	console.log(client_data[key])
+			    	date_ob = moment(client_data[key], allowed_date_formats);
+			    	if(date_ob._isValid){
+				    	client_data[key] = date_ob.format(date_format);
+				    	console.log(client_data[key]);
+				    }
+			    }
+			});
+    	}
+		return client_data;
+    },
+    apply_currency_localization: function(client_data, currency_format, country_locale) {
+    	var formatter = new Intl.NumberFormat(country_locale, {
+		  style: 'currency',
+		  currency: currency_format,
+		});
+    	console.log("apply_currency_localization");
+    	Object.keys(client_data).forEach(function(key) {
+		    if(key.slice(-5)==="_curr"){
+		    	//console.log(key);
+		    	console.log(formatter.format(client_data[key]));
+		    	client_data[key] = formatter.format(client_data[key]);
+		    }
+		});
+		return client_data;
+    },
+    apply_localization: function(client_data, currency_format="USD", date_format=null, country_locale="en-US") {
+    	console.log("Applying localization");
+    	client_data = this.apply_currency_localization(client_data, currency_format, country_locale);
+		client_data = this.apply_date_localization(client_data, country_locale, date_format);
+		return client_data;
+>>>>>>> 8664a9072e6a490b875a603756a9c76f2bb4ce11
+    }
+  };
+  
+  

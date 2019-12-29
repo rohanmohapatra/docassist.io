@@ -63,54 +63,58 @@ def upload_data():
         # Check if my inout has those fields
         if 'data' not in request.files:
             print('data not in request')
-            return Response(status=400)
-
-        data = request.files['data']
-
-        if data.filename == '':
-            return Response(status=400)
-        inserted_client_id = ''
-        # If allowed extensions save the data json
-        if data and allowed_file_extensions(data.filename, ALLOWED_EXTENSIONS):
-            data_filename = secure_filename(data.filename)
-
-            data_filename = data_filename.split(
-                '.')[0] + str(int(time.time()))[-6:] + '.json'
-
-            print(data_filename)
-
-            # in this block we read the file, convert it to a dict, and save it in mongoDB
-            try:
-                data_text = data.read()
-                if (type(data_text)!=str):
-                    print("Converting bytes object to string, so that it can be converted to dict")
-                    data_text=data_text.decode("utf-8")
-
-                data_dict = json.loads(data_text)
-                #print(data_dict)
-                inserted_client_id = add_client_data(data_dict)
-
-            except Exception as e:
-                print(e)
-                return Response(status=409)
-
-            try:
-                data.seek(0)
-                data.save(os.path.join(
-                    app.config['DATA_UPLOAD_FOLDER'], data_filename))
-
-                #subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
-                #                templateName, 'data/user_a/'+data_filename])
-
-            except Exception as e:
-                print(e)
-                return Response(status=409)
-
+            print("Will try to use Json to save")
+            json_data = request.get_json(force=True)
+            print(json_data)
+            inserted_client_id = add_client_data(json_data)
+            return jsonify({"client_id":inserted_client_id})
         else:
-            return Response('["file types not supported"]', status=400)
+            data = request.files['data']
 
-        # Make a call to the string processing module
-        return jsonify({"client_id":inserted_client_id})
+            if data.filename == '':
+                return Response(status=400)
+            inserted_client_id = ''
+            # If allowed extensions save the data json
+            if data and allowed_file_extensions(data.filename, ALLOWED_EXTENSIONS):
+                data_filename = secure_filename(data.filename)
+
+                data_filename = data_filename.split(
+                    '.')[0] + str(int(time.time()))[-6:] + '.json'
+
+                print(data_filename)
+
+                # in this block we read the file, convert it to a dict, and save it in mongoDB
+                try:
+                    data_text = data.read()
+                    if (type(data_text)!=str):
+                        print("Converting bytes object to string, so that it can be converted to dict")
+                        data_text=data_text.decode("utf-8")
+
+                    data_dict = json.loads(data_text)
+                    #print(data_dict)
+                    inserted_client_id = add_client_data(data_dict)
+
+                except Exception as e:
+                    print(e)
+                    return Response(status=409)
+
+                try:
+                    data.seek(0)
+                    data.save(os.path.join(
+                        app.config['DATA_UPLOAD_FOLDER'], data_filename))
+
+                    #subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
+                    #                templateName, 'data/user_a/'+data_filename])
+
+                except Exception as e:
+                    print(e)
+                    return Response(status=409)
+
+            else:
+                return Response('["file types not supported"]', status=400)
+
+            # Make a call to the string processing module
+            return jsonify({"client_id":inserted_client_id})
     else:
         Response(status=405)
 
