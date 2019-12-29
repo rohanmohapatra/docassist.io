@@ -5,6 +5,7 @@ import { makeStyles, useTheme } from '@material-ui/styles';
 import { useMediaQuery } from '@material-ui/core';
 
 import { Sidebar, Topbar } from './components';
+import { NavBar } from '../../components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -50,7 +51,7 @@ const Template = props => {
         [classes.shiftContent]: isDesktop
       })}
     >
-      <Topbar onSidebarOpen={handleSidebarOpen} />
+      <NavBar />
       <Sidebar
         onClose={handleSidebarClose}
         open={shouldOpenSidebar}

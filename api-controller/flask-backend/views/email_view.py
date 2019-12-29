@@ -6,6 +6,7 @@ import time
 import datetime
 import os
 from flask import current_app as app
+from dataccess.data_getfunctions import get_client_email_by_doc_name
 from dataccess.templates_setfunctions import add_template_to_db
 from dataccess.templates_getfunctions import get_templates_for_user, get_template_by_id
 from flask_cors import CORS, cross_origin
@@ -37,3 +38,12 @@ def send_email(name):
     else:
         print('sending nothing:', name)
         return Response(status=404)
+
+@email_view.route("/get_email/<doc_name>/", methods=["GET"])
+@cross_origin()
+def get_email(doc_name):
+    client_email = get_client_email_by_doc_name(doc_name)
+    if client_email:
+        return jsonify({"email":client_email})
+    else:
+        return jsonify({"email":""})

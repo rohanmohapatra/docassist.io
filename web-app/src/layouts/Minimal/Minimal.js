@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 
 import { Topbar } from './components';
+import { NavBar } from '../../components';
 
 const useStyles = ({
   root: {
@@ -27,7 +28,7 @@ class Minimal extends Component {
     console.log(classes);
     return(      
     <div className={classes.root}>
-      <Topbar />
+      <NavBar />
       <main className={classes.content}>{this.children}</main>
     </div>
     )}

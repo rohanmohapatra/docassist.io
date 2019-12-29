@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
-import theme from '../../../../theme';
+import theme from '../../theme';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -54,7 +54,7 @@ const BootstrapButton = withStyles({
   },
 })(Button);
 
-const Topbar = props => {
+const NavBar = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -94,8 +94,8 @@ const Topbar = props => {
   );
 };
 
-Topbar.propTypes = {
+NavBar.propTypes = {
   className: PropTypes.string
 };
 
-export default Topbar;
+export default NavBar;
