@@ -165,6 +165,7 @@ const TemplateCard = props => {
       }
        
     }
+    
 
 
   }, [formState.values]);
@@ -192,6 +193,27 @@ const TemplateCard = props => {
     formState.touched[field] && formState.errors[field] ? true : false;
   const [open, setOpen] = React.useState(false);
   const handleEmail = function(){
+    const fetchData = async () => {
+      var host = 'localhost'
+      var apiBaseUrl = '/api/email/get_email/';
+      var apiBasePort = '5000';
+      const result = await axios({
+          url: `http://${host}:${apiBasePort}${apiBaseUrl}`+template.filename+"/",
+        });
+        if(result.status === 200){
+          console.log("Status is 200")
+          setFormState(formState => ({
+            ...formState,
+            values: {
+              ...formState.values,
+              email:
+                result.data.email
+            },
+          }))
+          console.log(result.data);
+      }
+    };
+      fetchData();
     setOpen(true);
   }
   const handleClose = () => {
