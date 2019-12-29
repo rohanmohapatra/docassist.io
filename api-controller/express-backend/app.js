@@ -30,7 +30,7 @@ app.post('/api/generate/', function(request, response) {
     	currency_format = "USD";
     }
     if (!date_format) {
-    	date_format = "DD/MM/YYYY";
+    	date_format = null;
     }
     if (!country_locale) {
     	country_locale = "en-US";

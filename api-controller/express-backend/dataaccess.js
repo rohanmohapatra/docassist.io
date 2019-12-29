@@ -28,23 +28,39 @@ module.exports = {
         }).then(function(){
         })
     },
-    apply_date_localization: function(client_data, country_locale, date_format="DD-MM-YYYY") {
+    apply_date_localization: function(client_data, country_locale, date_format=null) {
     	var allowed_date_formats = ["MM-DD-YYYY", "MM/DD/YYYY", "M-DD-YYYY", "M/DD/YYYY", "MM-D-YYYY", "MM/D/YYYY","M-D-YYYY", "M/D/YYYY",
     	"DD-MM-YYYY","DD/MM/YYYY", "D-MM-YYYY", "D/MM/YYYY", "DD-M-YYYY", "DD/M/YYYY", "D-M-YYYY", "D/M/YYYY",
     	"DD-MM", "DD/MM"]
     	var formatter = new Intl.DateTimeFormat(country_locale);
     	console.log("apply_date_localization");
-    	Object.keys(client_data).forEach(function(key) {
-		    if(key.slice(-5)==="_date"){
-		    	console.log(key);
-		    	console.log(client_data[key])
-		    	date_ob = moment(client_data[key], allowed_date_formats);
-		    	if(date_ob._isValid){
-			    	client_data[key] = formatter.format(date_ob._d);
-			    	console.log(client_data[key]);
+
+    	if(!date_format){
+	    	Object.keys(client_data).forEach(function(key) {
+			    if(key.slice(-5)==="_date"){
+			    	console.log(key);
+			    	console.log(client_data[key])
+			    	date_ob = moment(client_data[key], allowed_date_formats);
+			    	if(date_ob._isValid){
+				    	client_data[key] = formatter.format(date_ob._d);
+				    	console.log(client_data[key]);
+				    }
 			    }
-		    }
-		});
+			});
+    	}
+    	else {
+    		Object.keys(client_data).forEach(function(key) {
+			    if(key.slice(-5)==="_date"){
+			    	console.log(key);
+			    	console.log(client_data[key])
+			    	date_ob = moment(client_data[key], allowed_date_formats);
+			    	if(date_ob._isValid){
+				    	client_data[key] = date_ob.format(date_format);
+				    	console.log(client_data[key]);
+				    }
+			    }
+			});
+    	}
 		return client_data;
     },
     apply_currency_localization: function(client_data, currency_format, country_locale) {
@@ -62,7 +78,7 @@ module.exports = {
 		});
 		return client_data;
     },
-    apply_localization: function(client_data, currency_format="USD", date_format="DD/MM/YYYY", country_locale="en-US") {
+    apply_localization: function(client_data, currency_format="USD", date_format=null, country_locale="en-US") {
     	console.log("Applying localization");
     	client_data = this.apply_currency_localization(client_data, currency_format, country_locale);
 		client_data = this.apply_date_localization(client_data, country_locale, date_format);
