@@ -36,8 +36,18 @@ def create_template():
     #print(location)
     with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "wb") as fp:
         fp.write(buf.getvalue())
-        
-        add_template_to_db(filename,os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        template_id = add_template_to_db(filename,os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # Now add the jinja-fields in the template to the template document in MongoDB
+        template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
+        modified_count = set_jinja_fields(template_location, template_id)
+
+        if(modified_count):
+            print("Added jinja-fields for",str(modified_count),"template")
+            return Response(status=200)
+        else:
+            print("Failed to add jinja fields to mongo.db.template")
+            return Response(status=409)
     return Response(status=200)
 
 
@@ -67,17 +77,17 @@ def upload_template():
                 print("Error:",e)
                 print("Something went wrong")
                 return Response(status=409)
-
-            # Now add the jinja-fields in the template to the template document in MongoDB
-            template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
-            modified_count = set_jinja_fields(template_location, template_id)
-
-            if(modified_count):
-                print("Added jinja-fields for",str(modified_count),"template")
-                return Response(status=200)
             else:
-                print("Failed to add jinja fields to mongo.db.template")
-                return Response(status=409)                  
+                # Now add the jinja-fields in the template to the template document in MongoDB
+                template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
+                modified_count = set_jinja_fields(template_location, template_id)
+
+                if(modified_count):
+                    print("Added jinja-fields for",str(modified_count),"template")
+                    return Response(status=200)
+                else:
+                    print("Failed to add jinja fields to mongo.db.template")
+                    return Response(status=409)                  
 
         else:
             return Response('["file types not supported"]', status=400)
@@ -122,6 +132,16 @@ def save_templates(template_id):
     with open(location, "wb") as fp:
         fp.write(buf.getvalue())
         add_template_to_db(result["filename"],location)
+        # Now add the jinja-fields in the template to the template document in MongoDB
+        template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
+        modified_count = set_jinja_fields(template_location, template_id)
+
+        if(modified_count):
+            print("Added jinja-fields for",str(modified_count),"template")
+            return Response(status=200)
+        else:
+            print("Failed to add jinja fields to mongo.db.template")
+            return Response(status=409)
     return Response(status=200)
 
 
