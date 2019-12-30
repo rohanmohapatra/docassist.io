@@ -78,6 +78,7 @@ def upload_template():
                 print("Something went wrong")
                 return Response(status=409)
             else:
+
                 # Now add the jinja-fields in the template to the template document in MongoDB
                 template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
                 modified_count = set_jinja_fields(template_location, template_id)
@@ -132,6 +133,7 @@ def save_templates(template_id):
     with open(location, "wb") as fp:
         fp.write(buf.getvalue())
         add_template_to_db(result["filename"],location)
+
         # Now add the jinja-fields in the template to the template document in MongoDB
         template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
         modified_count = set_jinja_fields(template_location, template_id)

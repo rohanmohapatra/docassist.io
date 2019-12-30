@@ -21,7 +21,7 @@ for folder in folders:
 mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
 
 db = mongo_client["docassist"]
-collections = ['templates', 'generated', 'clients' , 'counters']
+collections = ['templates', 'generated', 'clients' , 'counters', 'mapping']
 for collection in collections:
     db[collection].drop()
 

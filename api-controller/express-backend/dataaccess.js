@@ -21,6 +21,56 @@ module.exports = {
             return item;
         })
     },
+    get_jinja_fields_by_template_name: function(name) {
+        return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
+            let collection = db.db('docassist').collection('templates');
+
+		    var result = collection.findOne(
+		        {"filename": name},
+		        {projection: {"jinja_fields":1, "sub_templates":1}}
+		    ).then(async function(r){
+		    	let jinja_fields = r["jinja_fields"];
+		    	var sub_templates = r["sub_templates"];
+		    	let counter=0;
+
+		    	var extend_jinja_fields = async function() {
+		    		if (counter>=sub_templates.length){
+		    			console.log("done");
+		    			return "done";
+		    		}
+		    		
+		    		sub_template = sub_templates[counter];
+		    		find_result = await collection.findOne(
+			            {"filename":sub_template},
+			            {projection : {"jinja_fields":1}}
+			        ).then(function(r){
+			        	sub_template_jinja_fields = r["jinja_fields"];
+			        	let difference = sub_template_jinja_fields.filter(x => !jinja_fields.includes(x));
+			        	jinja_fields = jinja_fields.concat(difference);
+			        	counter++;
+			        }).then(function(){
+			        	extend_jinja_fields(counter);
+			        })
+			        
+		    	}
+
+		    	await extend_jinja_fields(0);
+		    	//console.log("jinja_fields including sub templates: "+jinja_fields);
+
+		    	// remove default fields such as page_break etc.
+		    	var default_fields = ["page_break"];
+		    	for (index in jinja_fields){
+		    		var field = jinja_fields[index];
+			        if (default_fields.indexOf(field)>-1) {
+			            jinja_fields.splice(index, 1);
+			        }
+			    }
+			    console.log(jinja_fields);
+		    	return jinja_fields;
+		    });
+		    return result;
+        })
+    },
     add_generated_document: function(document_name, client_id) {
         return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
             let collection = db.db('docassist').collection('generated');

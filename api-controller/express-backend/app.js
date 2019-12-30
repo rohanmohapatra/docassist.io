@@ -41,7 +41,10 @@ app.post('/api/generate/', function(request, response) {
 
     dataaccess.get_client_by_id(client_id)
     .then(function(client_data){
-        
+        j=dataaccess.get_jinja_fields_by_template_name(template_name);
+        console.log(j);
+        //mapped_client_data = dataaccess.map_client_to_template(template_name, client_data)
+        /*
         localized_client_data = dataaccess.apply_localization(client_data, currency_format, date_format, country_locale);
         console.log(localized_client_data);
         
@@ -56,11 +59,10 @@ app.post('/api/generate/', function(request, response) {
             });
             console.log("Completed");
         })
-
-        
+		*/
         return response.status(200).send();
     })
-    
+
 });
 
 
