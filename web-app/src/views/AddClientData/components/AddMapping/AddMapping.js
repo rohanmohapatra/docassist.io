@@ -145,6 +145,17 @@ const AddMapping = (props) => {
       </Dialog>
       </Grid>
       </Grid>
+      <Grid
+        container
+        spacing={4}
+        className={classes.dialog}
+      >
+        <Grid
+          item
+          lg={12}
+        >
+        </Grid>
+        </Grid>
     </div>
   );
 };
