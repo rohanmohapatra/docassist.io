@@ -1,5 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var moment = require('moment');
+var mongo = require('mongodb');
 
 module.exports = {
 	db:null,
@@ -25,8 +26,9 @@ module.exports = {
     add_generated_document: function(document_name, client_id) {
         return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
             let collection = db.db('docassist').collection('generated');
-            return collection.insertOne({document_name: document_name, client_id:client_id, time_created: parseInt(new Date().getTime() / 1000)});
-        }).then(function(){
+            return collection.insertOne({document_name: document_name, client_id:client_id, time_created: parseInt(new Date().getTime() / 1000), status: "generating"});
+        }).then(function(response){
+          return response.insertedId;
         })
     },
     get_jinja_fields_by_template_name: function(name) {
@@ -174,6 +176,15 @@ module.exports = {
     	client_data = this.apply_currency_localization(client_data, currency_format, country_locale);
 		client_data = this.apply_date_localization(client_data, country_locale, date_format);
 		return client_data;
+    },
+    update_document_status: function(id, document_name) {
+      return MongoClient.connect('mongodb://localhost:27017/docassist').then(function(db){
+        var o_id = new mongo.ObjectID(id);
+        console.log(o_id);
+        let collection = db.db('docassist').collection('generated');
+        return collection.updateOne({_id: o_id}, {$set : {document_name: document_name, status : "done"}});
+    }).then(function(){
+    })
     }
   };
   

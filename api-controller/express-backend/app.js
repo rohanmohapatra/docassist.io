@@ -51,18 +51,27 @@ app.post('/api/generate/', function(request, response) {
 				localized_client_data = dataaccess.apply_localization(mapped_client_data, currency_format, date_format, country_locale);
 		        console.log(localized_client_data);
 		        
-		        console.log(template_name);
+                var insertedId = ";"
 		        fs.writeFileSync(temp_json, JSON.stringify(localized_client_data));
-		        exec('python3 ../scripts/docgen.py ../scripts/template/user_a/'+template_name+ ' ../scripts/temp.json', function(err, stdout){
-		            console.log(err);
-		            var output = stdout.split("\n");
-		            console.log(output);
-		            var documentName = output[output.length -2].split(":")[1];
-		            dataaccess.add_generated_document(documentName.trim(), client_id).then(function(){
-		                console.log("Added to Collection")
-		            });
-		            console.log("Completed");
-		        })
+		        dataaccess.add_generated_document("", client_id).then(function(id){
+                    console.log("Added to Collection: "+id);
+                    insertedId = id;
+                    exec('python3 ../scripts/docgen.py ../scripts/template/user_a/'+template_name+ ' ../scripts/temp.json', function(err, stdout){
+                        //console.log(err);
+                        //console.log(stdout);
+                        //console.log(stdout.split("\n"));
+                        var output = stdout.split("\n");
+                        console.log(insertedId);
+                        var documentName = output[output.length -2].split(":")[1];
+                        dataaccess.update_document_status(insertedId, documentName.trim()).then(function(){
+                            console.log("Status Changed");
+                        })
+                        /*dataaccess.add_generated_document(documentName.trim(), client_id).then(function(){
+                            console.log("Added to Collection")
+                        });*/
+                        console.log("Completed");
+                    })
+                });
 				
 		        return response.status(200).send();
 			})
