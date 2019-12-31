@@ -69,6 +69,12 @@ const Routes = () => {
                 layout={TemplateLayout}
                 path='/upload/data'
             />
+            <RouteWithLayout 
+                component={GenerateDocView}
+                exact
+                layout={TemplateLayout}
+                path='/document/generate'
+            />
             <RouteWithLayout
             component={WriteYourOwnTemplateView}
             exact
