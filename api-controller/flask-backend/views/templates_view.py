@@ -39,7 +39,7 @@ def create_template():
         template_id = add_template_to_db(filename,os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # Now add the jinja-fields in the template to the template document in MongoDB
-        template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
+        template_location = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         modified_count = set_jinja_fields(template_location, template_id)
 
         if(modified_count):
@@ -133,7 +133,7 @@ def save_templates(template_id):
     with open(location, "wb") as fp:
         fp.write(buf.getvalue())
         add_template_to_db(result["filename"],location)
-
+        template_filename = result["filename"];
         # Now add the jinja-fields in the template to the template document in MongoDB
         template_location = os.path.join(app.config['UPLOAD_FOLDER'], template_filename)
         modified_count = set_jinja_fields(template_location, template_id)

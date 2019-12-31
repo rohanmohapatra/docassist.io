@@ -58,7 +58,7 @@ function insertStar() {
 
 function insertJinjaTag() {
   const cursorPosition = this.quill.getSelection().index;
-  this.quill.insertText(cursorPosition, "{{  }}");
+  this.quill.insertText(cursorPosition, "{{}}");
 
   this.quill.setSelection(cursorPosition+3);
 }
