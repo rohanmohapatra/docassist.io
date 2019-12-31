@@ -10,7 +10,7 @@ from dataccess.mapping_setfunctions import add_mapping_data, update_mapping
 
 from utils.utils import allowed_file_extensions
 from werkzeug.utils import secure_filename
-
+import time
 mapping_view = Blueprint('mapping_view', __name__)
 
 @mapping_view.route("/upload/", methods=['POST'])
@@ -23,7 +23,7 @@ def upload_mapping():
 
 		if 'mapping' in request.files:
 			print('mapping file in request')
-			return Response(status=400)
+			#return Response(status=400)
 
 			mapping = request.files['mapping']
 
