@@ -99,9 +99,9 @@ module.exports = {
     		console.log(jinja_fields);
     		jinja_fields.forEach(function(template_field) {
     			console.log("-----"+template_field+"---------"+mapping_dict[template_field]);
-    			if(template_field.trim() in mapping_dict){
+    			if(template_field in mapping_dict){
     				var client_field = mapping_dict[template_field];
-    				if (client_field.trim() in client_data) {
+    				if (client_field in client_data) {
 		    			new_client_data[template_field] = client_data[client_field];
     				}
     				else {
