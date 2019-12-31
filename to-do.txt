@@ -1,0 +1,14 @@
+1) give option to delete template
+2) give option to delete generated-document
+3) change "1-6 of 20 >"
+4) in upload template, when you click on the upload-percentage box after its 100%, take them to "View templates" page
+5) Make a dashboard to add user data
+6) shift fixed_templates to user folder
+	6.1) make sure these fixed templates are also uploaded from front end, otherwise their data will not be in mongo..
+		so we won't be able to fetch jinja_fields for these fixed_templates
+	6.2) make corresponding changes in docgen.py (while making list of fixed_templates)
+7) in templates_getfunctions.py/get_jinja_fields_by_id , fetch the jinja_fields of the sub templates too
+8) make a new collection with generated doc name and associated client_id (for whom the doc was generated)
+9) give "create template" option in GUI
+10) revamp UI
+11) user management (sign up/login)
