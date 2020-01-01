@@ -161,6 +161,7 @@ const TemplateCard = props => {
         setDocStatus(false);
       else if (status == "done"){
         setDocStatus(true);
+        props.refreshTemplates();
         estream.close();
       }
        

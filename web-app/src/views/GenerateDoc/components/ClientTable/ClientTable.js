@@ -74,6 +74,11 @@ const ClientTable = props => {
     console.log(client);
     //setOpen(true);
     setClientData(client);
+    setGenerateStatus(prevState => {
+      let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+      client_obj[client._id] = 'Processing...';                     // update the name property, assign a new value                 
+      return client_obj;                                 // return new object jasper object
+    })
     axios.get("http://localhost:5000/api/data/check_template_schema_compatibility_intelligently/"+props.templateId+"/"+client._id+"/")
     .then(function(response){
       setMissingFields(response.data);
@@ -123,6 +128,12 @@ const ClientTable = props => {
   }
   function callbackParent(close, isReady, client){
     setOpen(close);
+    
+    setGenerateStatus(prevState => {
+      let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+      client_obj[client._id] = 'Service Worker Sleep';                     // update the name property, assign a new value                 
+      return client_obj;                                 // return new object jasper object
+    })
     if(isReady == true){
       var client_id = client._id;
     setGenerateStatus(prevState => {
