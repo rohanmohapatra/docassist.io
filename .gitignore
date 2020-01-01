@@ -1,6 +1,7 @@
  __pycache__/
 *.pyc
 
+ api-controller/scripts/temp.json
  api-controller/flask-backend/__pycache__/
  api-controller/flask-backend/dataccess/__pycache__/
  api-controller/flask-backend/utils/__pycache__/
