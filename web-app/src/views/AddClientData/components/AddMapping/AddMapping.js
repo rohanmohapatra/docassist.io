@@ -49,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 const AddMapping = (props) => {
   const classes = useStyles();
   const [mapping, setMapping] = React.useState('');
+  const [mappingData, setMappingData] = React.useState({});
   const [open, setOpen] = React.useState(false);
   const handleChange = event => {
     setMapping(event.target.value);
