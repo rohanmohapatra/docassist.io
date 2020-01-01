@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-{"_id":"client_2","jmf_client_name":"FormZilla","company_name":"FormZilla","job_title":"Software Developer","manager_job_title":"Chief Executive Officer","annual_salary":"300000","start_date":"01/12/2019","paycheck_date":"21th","bonus_percent":"2","paid_vacation":"6","hr_manager":"Rohan Rajesh Talesara"}
+{"jmf_created_date":"9/24/2019","jmf_nomination_type":"some_nomination","jmf_declaration_type2":"MOTOR VEHICLE INSURANCE DECLARATION","jmf_declaration_type4":"MOTOR VEHICLE INSURANCE DECLARATION","jmf_declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION","jmf_client_name":"client1","jmf_client_email":"rtalesara77@gmail.com","jmf_declaration_type3":"MOTOR VEHICLE INSURANCE DECLARATION","jmf_salary_curr":"$100,000.00"}
 =======
-{"_id":"client_2","jmf_declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION","jmf_client_name":"PES","salary_curr":"$100,000.00","jmf_created_date":"9/24/2019","jmf_client_email":"rtalesara77@gmail.com"}
->>>>>>> 8664a9072e6a490b875a603756a9c76f2bb4ce11
+{"jmf_created_date":"9/24/2019","jmf_nomination_type":"some_nomination","jmf_client_email":"rtalesara77@gmail.com","jmf_salary_curr":"$100,000.00","jmf_client_name":"client1","jmf_declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION"}
+>>>>>>> e3577b68c29783f7106fc3e29e7b769ff8389b04
