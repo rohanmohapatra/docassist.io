@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography, Divider } from '@material-ui/core';
 import { FilePond } from 'react-filepond';
-import { ClientTable, SuccessBar } from './components';
+import { ClientTable, SuccessBar, Localization } from './components';
 import 'filepond/dist/filepond.min.css';
 import axios from 'axios';
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
     const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [files, setFiles] = useState([]);
-
+    const [localization, setLocalization] = useState({});
   const buttonClassname = clsx({
     [classes.buttonSuccess]: success,
   });
@@ -86,10 +86,19 @@ const useStyles = makeStyles(theme => ({
         
       }
     };
+    const localizationCallback = (currency, locale, date) => {
+      var data= {
+        currency_format: currency,
+        locale: locale,
+        date_format: date
+      }
+      setLocalization(data);
+    }
     return (
       <div className={classes.root}>
         {success && <SuccessBar open={success} />}
-        <Grid
+        <Localization localizationCallback={localizationCallback}/>
+        {/*{<Grid
           container
           justify="center"
           spacing={4}
@@ -143,9 +152,9 @@ const useStyles = makeStyles(theme => ({
               {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
             </Button>}
           </Grid>
-        </Grid>
+            </Grid>*/}
         <Divider/>
-        <ClientTable clients={clients} templateName={props.location.state.templateName} templateId={props.location.state.templateId}/>
+        <ClientTable clients={clients} templateName={props.location.state.templateName} templateId={props.location.state.templateId} localization={localization}/>
       </div>
     );
   };
