@@ -107,7 +107,7 @@ const AddClientData = () => {
     //var data = {filename : self.state.documentName+'.docx', html: self.state.html}
     console.log(formState.values.client_data)
     var data = JSON.parse(formState.values.client_data)
-    axios.post("http://localhost:5000/api/data/upload/?mapping_id="+mappingId,data)
+    axios.post("http://localhost:5000/api/data/upload/"+mappingId+"/",data)
     .then(function(response){
         if(response.status == 200){
           setSaveState("success");
@@ -157,7 +157,7 @@ const AddClientData = () => {
             <Typography variant="subtitle2">
               Add a client by uploading a JSON
             </Typography>
-            <FilePond allowMultiple={true} server={"http://localhost:5000/api/data/upload/?mapping_id="+mappingId} name="data"/>
+            <FilePond allowMultiple={true} server={"http://localhost:5000/api/data/upload/"+mappingId+"/"} name="data"/>
           </div>
         </Grid>
       </Grid>
