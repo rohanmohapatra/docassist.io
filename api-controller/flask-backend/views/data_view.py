@@ -21,7 +21,7 @@ from gensim.models import FastText
 data_view = Blueprint('data_view', __name__)
 
 
-@data_view.route("/upload/<mapping_id>", methods=['POST'])
+@data_view.route("/upload/<mapping_id>/", methods=['POST'])
 @cross_origin()
 def upload_data(mapping_id):
     '''

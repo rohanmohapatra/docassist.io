@@ -63,6 +63,7 @@ app.post('/api/generate/', function(request, response) {
                         var output = stdout.split("\n");
                         console.log(insertedId);
                         var documentName = output[output.length -2].split(":")[1];
+                        console.log("documentName: "+documentName);
                         dataaccess.update_document_status(insertedId, documentName.trim()).then(function(){
                             console.log("Status Changed");
                         })
