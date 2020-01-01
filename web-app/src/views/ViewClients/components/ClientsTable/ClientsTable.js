@@ -80,7 +80,7 @@ const ClientsTable = props => {
     }
 
     setSelectedClients(newSelectedClients);
-    props.callbackFromParent({clients: newSelectedClients});
+    //props.callbackFromParent({clients: newSelectedClients});
   };
 
   const handlePageChange = (event, page) => {
