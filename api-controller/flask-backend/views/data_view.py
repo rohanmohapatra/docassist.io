@@ -212,6 +212,42 @@ def check_template_schema_compatibility(template_id, client_id):
 
     return jsonify(missing_fields)
 
+@data_view.route("/check_template_schema_compatibility_intelligently/<template_id>/<client_id>/", methods=["GET"])
+@cross_origin()
+def check_template_schema_compatibility_intelligently(template_id, client_id):
+    '''
+    gets jinja fields of template
+    gets mapping of client
+    checks if jinja fields of template are there in mapping
+    returns a dict of missing template fields with AI suggestion of corresponding client_field
+    '''
+    template_jinja_fields = get_jinja_fields_by_id(template_id)
+    client_data = get_client_by_id(client_id)
+    mapping_id = client_data["mapping_id"]
+    mapping_dict = fetch_mapping_by_id(mapping_id)
+    #remove mapping_id during gensim
+    missing_fields = {}
+    client_data_popped = client_data
+    client_data_popped.pop("_id", None)
+    client_data_popped.pop("mapping_id", None)
+    client_data_keys = list(client_data_popped.keys())
+
+    #Gensim FASTTEXT
+    client_data_keys = reshape(client_data_keys, (-1,1))
+    model = FastText(client_data_keys, size=30, window=5, min_count=1, iter=20)
+
+    for jinja_field in template_jinja_fields:
+        if not(jinja_field in mapping_dict):
+            # make the value equal to gensim suggestion
+            if(jinja_field in client_data_keys):
+                print("Match in Client Data")
+                missing_fields[jinja_field] = jinja_field
+            else:
+                print("{} , intelligence_used, confidence : {}".format(jinja_field, model.wv.most_similar(jinja_field)[0]))
+                missing_fields[jinja_field] = model.wv.most_similar(jinja_field)[0][0]
+
+    return jsonify(missing_fields)
+
 
 @data_view.route("/mapping/autopopulate/",  methods=["POST"])
 @cross_origin()
