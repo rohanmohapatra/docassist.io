@@ -37,6 +37,11 @@ const useStyles = makeStyles(theme => ({
   },
   select: {
       width: 150,
+      marginTop: 4,
+      marginBottom: 15
+  },
+  template_field:{
+      marginBottom: 9
   },
   buttonProgress: {
     color: green[500],
@@ -70,7 +75,7 @@ const MissingFields = (props) => {
   };
   const handleClose = () => {
     setOpen(false);
-    props.onClose(false);
+    props.onClose(false, false, clientData);
     
   };
 
@@ -109,8 +114,8 @@ const MissingFields = (props) => {
           </DialogContentText>
           {Object.keys(missingFields).map(template_field => (
               <div>
-                  <Typography variant="h3">
-                  {template_field}
+                  <Typography variant="h5" className={classes.template_field}>
+                  Template Field : {template_field}
                   {console.log(missingFields[template_field])}
                    </Typography>
                    <InputLabel id ="mapping-label">Client Mapping Field</InputLabel>
