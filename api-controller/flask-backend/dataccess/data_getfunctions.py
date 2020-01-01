@@ -1,8 +1,7 @@
 from app import mongo, app
 
 def get_all_clients():
-	result = list(mongo.db.clients.find(
-		projection={'_id': True, 'jmf_client_name':True}))
+	result = list(mongo.db.clients.find())
 	return result
 
 def get_client_by_id(id):

@@ -145,7 +145,7 @@ const useStyles = makeStyles(theme => ({
           </Grid>
         </Grid>
         <Divider/>
-        <ClientTable client={clients} templateName={props.location.state.templateName} />
+        <ClientTable clients={clients} templateName={props.location.state.templateName} templateId={props.location.state.templateId}/>
       </div>
     );
   };

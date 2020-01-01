@@ -202,7 +202,7 @@ def check_template_schema_compatibility(template_id, client_id):
     client_data = get_client_by_id(client_id)
     mapping_id = client_data["mapping_id"]
     mapping_dict = fetch_mapping_by_id(mapping_id)
-
+    #remove mapping_id during gensim
     missing_fields = {}
 
     for jinja_field in template_jinja_fields:
