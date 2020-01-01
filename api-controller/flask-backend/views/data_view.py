@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
+from dataccess.mapping_getfunctions import fetch_mapping_by_id
 from dataccess.data_setfunctions import add_client_data
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id, get_all_docs
 from dataccess.templates_getfunctions import get_jinja_fields_by_id
@@ -40,14 +41,16 @@ def upload_data(mapping_id):
 
             # we check if the json_data is a list
             if type(json_data) == dict:
+                print("single client as json")
                 json_data["mapping_id"] = mapping_id
                 inserted_client_id = add_client_data(json_data)
                 return jsonify([inserted_client_id])
             elif type(json_data) == list:
+                print("multiple client as json")
                 inserted_clients = []
                 for client_dict in json_data:
                     client_dict["mapping_id"] = mapping_id
-                    inserted_client_id = add_client_data(json_data)
+                    inserted_client_id = add_client_data(client_dict)
                     inserted_clients.append(inserted_client_id)
                 return jsonify(inserted_clients)
             else:
@@ -186,6 +189,29 @@ def bulk_filling():
         print(e)
         return Response(status=400)
     
+@data_view.route("/check_template_schema_compatibility/<template_id>/<client_id>/", methods=["GET"])
+@cross_origin()
+def check_template_schema_compatibility(template_id, client_id):
+    '''
+    gets jinja fields of template
+    gets mapping of client
+    checks if jinja fields of template are there in mapping
+    returns a dict of missing template fields with AI suggestion of corresponding client_field
+    '''
+    template_jinja_fields = get_jinja_fields_by_id(template_id)
+    client_data = get_client_by_id(client_id)
+    mapping_id = client_data["mapping_id"]
+    mapping_dict = fetch_mapping_by_id(mapping_id)
+
+    missing_fields = {}
+
+    for jinja_field in template_jinja_fields:
+        if not(jinja_field in mapping_dict):
+            # make the value equal to gensim suggestion
+            missing_fields[jinja_field] = ""
+
+    return jsonify(missing_fields)
+
 
 @data_view.route("/mapping/autopopulate/",  methods=["POST"])
 @cross_origin()
