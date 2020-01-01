@@ -74,7 +74,7 @@ const ClientTable = props => {
     console.log(client);
     //setOpen(true);
     setClientData(client);
-    axios.get("http://localhost:5000/api/data/check_template_schema_compatibility/"+props.templateId+"/"+client._id+"/")
+    axios.get("http://localhost:5000/api/data/check_template_schema_compatibility_intelligently/"+props.templateId+"/"+client._id+"/")
     .then(function(response){
       setMissingFields(response.data);
       if(Object.keys(response.data).length != 0)
@@ -89,7 +89,7 @@ const ClientTable = props => {
             return client_obj ;                                 // return new object jasper object
           })
           //setGenerateStatus({client_id : "Generating Data ..."});
-          var data = {template_name: templateName, client_id: client_id}
+          var data = {template_name: templateName, client_id: client_id, localization: props.localization}
           axios.post("http://localhost:5000/api/generate/", data)
           .then(function(response){
             setGenerateStatus(prevState => {
