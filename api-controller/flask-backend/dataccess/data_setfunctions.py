@@ -16,5 +16,5 @@ def add_client_data(client_data):
 
 def add_document_generated(document_name, client_id):
     collection = mongo.db.generated
-    collection.insert_one({"document_name" : document_name, "client_id": client_id, "time_created":time.time()})
+    collection.insert_one({"document_name" : document_name, "client_id": client_id, "time_created":time.time(),"status":"done"})
     print("Added")

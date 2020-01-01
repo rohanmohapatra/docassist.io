@@ -68,13 +68,14 @@ def generate_doc(template_location, context, username):
 
 if __name__=="__main__":
 	import argparse
-
+	print("in docgen")
 	parser = argparse.ArgumentParser()
 	parser.add_argument('template_location', help="Enter location of template.", type=str)
 	parser.add_argument('data_location', help="Enter location of data dictionary.", type=str)
 	parser.add_argument('username', nargs='?', default="user_a", help="Enter username for whom document is being generated.", type=str)
 	args = parser.parse_args()
-	
+	print("finished argparse")
+
 	with open(args.data_location) as json_file:
 		print("username:",args.username)
 
