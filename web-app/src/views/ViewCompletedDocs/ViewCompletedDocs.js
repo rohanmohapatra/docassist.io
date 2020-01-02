@@ -49,6 +49,22 @@ const ViewTemplates = props => {
       };
         fetchData();
   },[]);
+  const refreshTemplates = function(){
+    const fetchData = async () => {
+        var host = 'localhost'
+        var apiBaseUrl = '/api/data/generated_docs_list';
+        var apiBasePort = '5000';
+        const result = await axios({
+            url: `http://${host}:${apiBasePort}${apiBaseUrl}`,
+          });
+          if(result.status === 200){
+            console.log("Status is 200")
+            setTemplates(result.data);
+            console.log(result.data);
+        }
+      };
+        fetchData();
+  }
 
   function onAction(action, payload) {
     if(action === 'useTemp') {
@@ -72,7 +88,7 @@ const ViewTemplates = props => {
               md={6}
               xs={12}
             >
-              <TemplateCard template={template} onAction={onAction} callback={setEmailStatus}/>
+              <TemplateCard template={template} onAction={onAction} callback={setEmailStatus} refreshTemplates={refreshTemplates}/>
             </Grid>
           ))}
         </Grid>

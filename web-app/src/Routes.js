@@ -14,7 +14,8 @@ import {
     BulkGenerate as BulkGenerateView,
     WriteYourOwnTemplate as WriteYourOwnTemplateView,
     EditCompletedDoc as EditCompletedDocView,
-    AddClientData as AddClientDataView
+    AddClientData as AddClientDataView,
+    ViewClients as ViewClientsView,
   } from './views';
 
 const Routes = () => {
@@ -69,11 +70,23 @@ const Routes = () => {
                 layout={TemplateLayout}
                 path='/upload/data'
             />
+            <RouteWithLayout 
+                component={GenerateDocView}
+                exact
+                layout={TemplateLayout}
+                path='/document/generate'
+            />
             <RouteWithLayout
             component={WriteYourOwnTemplateView}
             exact
             layout = {MinimalLayout}
             path='/template/create'
+            />
+            <RouteWithLayout
+            component={ViewClientsView}
+            exact
+            layout = {TemplateLayout}
+            path='/view/clients'
             />
             <RouteWithLayout
                 component={EditCompletedDocView}

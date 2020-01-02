@@ -24,6 +24,11 @@
         "route" : "/api/media/",
         "address": "http://localhost:5001/api/media",
         "app" : "flask"
+      },
+      {
+        "route" : "/api/mapping/",
+        "address": "http://localhost:5001/api/mapping",
+        "app" : "flask"
       }
     ]
   }

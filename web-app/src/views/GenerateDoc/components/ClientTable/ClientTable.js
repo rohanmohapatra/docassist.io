@@ -19,6 +19,7 @@ import {
   Button
 } from '@material-ui/core';
 import axios from 'axios';
+import MissingFields from '../MissingFields';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -41,22 +42,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ClientTable = props => {
-  const { className, client, templateName,  ...rest } = props;
+  const { className, clients, templateName,  ...rest } = props;
 
   const classes = useStyles();
   const [generateStatus, setGenerateStatus] = useState({client_1 : "Hello", client_2 : "Bye"});
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [page, setPage] = useState(0);
+  const [missingFieldsDialogOpen, setOpen] = useState(false);
+  const [clientData, setClientData] = useState({});
+  const [missingFields, setMissingFields] = useState({});
   useEffect(() => {
       var obj = {};
       console.log("Hello");
-      console.log(props.client);
-        client.map( eachClient => (
+      console.log(props.clients);
+        clients.map( eachClient => (
             obj[eachClient._id] = "Service Worker Sleep"
         ));
         console.log(obj);
         setGenerateStatus(obj);
-    },[props.client]);
+    },[props.clients]);
 
   const handlePageChange = (event, page) => {
     setPage(page);
@@ -66,7 +70,43 @@ const ClientTable = props => {
     setRowsPerPage(event.target.value);
   };
 
-  function handleGenerate(client_id){
+  function handleGenerate(client){
+    console.log(client);
+    //setOpen(true);
+    setClientData(client);
+    setGenerateStatus(prevState => {
+      let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+      client_obj[client._id] = 'Processing...';                     // update the name property, assign a new value                 
+      return client_obj;                                 // return new object jasper object
+    })
+    axios.get("http://localhost:5000/api/data/check_template_schema_compatibility_intelligently/"+props.templateId+"/"+client._id+"/")
+    .then(function(response){
+      setMissingFields(response.data);
+      if(Object.keys(response.data).length != 0)
+          setOpen(true);
+      else if(Object.keys(response.data).length == 0){
+        var client_id = client._id;
+        setOpen(false);
+        setGenerateStatus(prevState => {
+            let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+            console.log(client_obj);
+            client_obj[client_id] = 'Generating... Please Wait';                     // update the name property, assign a new value                 
+            return client_obj ;                                 // return new object jasper object
+          })
+          //setGenerateStatus({client_id : "Generating Data ..."});
+          var data = {template_name: templateName, client_id: client_id, localization: props.localization}
+          axios.post("http://localhost:5000/api/generate/", data)
+          .then(function(response){
+            setGenerateStatus(prevState => {
+                let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+                client_obj[client_id] = 'Done';                     // update the name property, assign a new value                 
+                return client_obj;                                 // return new object jasper object
+              })
+            console.log(generateStatus);
+          })
+      }
+    })
+    /*
     setGenerateStatus(prevState => {
         let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
         console.log(client_obj);
@@ -84,6 +124,36 @@ const ClientTable = props => {
           })
         console.log(generateStatus);
       })
+      */
+  }
+  function callbackParent(close, isReady, client){
+    setOpen(close);
+    
+    setGenerateStatus(prevState => {
+      let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+      client_obj[client._id] = 'Service Worker Sleep';                     // update the name property, assign a new value                 
+      return client_obj;                                 // return new object jasper object
+    })
+    if(isReady == true){
+      var client_id = client._id;
+    setGenerateStatus(prevState => {
+        let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+        console.log(client_obj);
+        client_obj[client_id] = 'Generating... Please Wait';                     // update the name property, assign a new value                 
+        return client_obj ;                                 // return new object jasper object
+      })
+      //setGenerateStatus({client_id : "Generating Data ..."});
+      var data = {template_name: templateName, client_id: client_id}
+      axios.post("http://localhost:5000/api/generate/", data)
+      .then(function(response){
+        setGenerateStatus(prevState => {
+            let client_obj = Object.assign({}, prevState);  // creating copy of state variable jasper
+            client_obj[client_id] = 'Done';                     // update the name property, assign a new value                 
+            return client_obj;                                 // return new object jasper object
+          })
+        console.log(generateStatus);
+      })
+    }
   }
   return (
     <Card
@@ -103,7 +173,8 @@ const ClientTable = props => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {client.slice(0, rowsPerPage).map(client => (
+                {clients.slice(0, rowsPerPage).map(client => (
+                  
                   <TableRow
                     className={classes.tableRow}
                     hover
@@ -117,9 +188,11 @@ const ClientTable = props => {
                     </TableCell>
                     <TableCell>
                         <div className={classes.nameContainer}>
-                        <Button variant="outlined" color="secondary" className={classes.button} onClick={() => handleGenerate(client._id)}>
+                        <Button variant="outlined" color="secondary" className={classes.button} onClick={() => handleGenerate(client)}>
                             Generate
                         </Button>
+                       
+                        {console.log(missingFieldsDialogOpen)}
                         </div>
                         
                     </TableCell>
@@ -131,13 +204,14 @@ const ClientTable = props => {
                 ))}
               </TableBody>
             </Table>
+            <MissingFields openDialog={missingFieldsDialogOpen} missingFields={missingFields} onClose={callbackParent} clientData={clientData} templateId={props.templateId}/>
           </div>
         </PerfectScrollbar>
       </CardContent>
       <CardActions className={classes.actions}>
         <TablePagination
           component="div"
-          count={client.length}
+          count={clients.length}
           onChangePage={handlePageChange}
           onChangeRowsPerPage={handleRowsPerPageChange}
           page={page}

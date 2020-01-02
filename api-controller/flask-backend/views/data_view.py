@@ -1,5 +1,6 @@
 from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
+from dataccess.mapping_getfunctions import fetch_mapping_by_id
 from dataccess.data_setfunctions import add_client_data
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id, get_all_docs
 from dataccess.templates_getfunctions import get_jinja_fields_by_id
@@ -21,44 +22,15 @@ from gensim.models import FastText
 data_view = Blueprint('data_view', __name__)
 
 
-@data_view.route("/upload/", methods=['POST'])
+@data_view.route("/upload/<mapping_id>/", methods=['POST'])
 @cross_origin()
-def upload_data():
+def upload_data(mapping_id):
+    '''
+    get a json list of client objects. Also gets mapping_id in the url.
+    this mapping_id gets added to all the clients before storing.
+    '''
     ALLOWED_EXTENSIONS = set(['json'])
     if request.method == 'POST':
-        # print(request.files.to_dict(flat=False))
-        ''' Backend Revamped
-
-        Upload and Generate Seperated
-        Please refer older commits
-
-
-        templateName = request.args.get('tempn')
-        print(templateName)
-
-        client_id = request.args.get('client_id')
-        if (client_id):
-            print("client_id detected in request, generating based on existing client data")
-            client_data = get_client_by_id(client_id)
-
-            try:
-                temp_client_data_file = open('temp.json', 'w', encoding='utf-8')
-            except Exception as e:
-                print(e)
-                return Response(status=409)
-            else:
-                with temp_client_data_file:
-                    json.dump(client_data, temp_client_data_file, ensure_ascii=False)
-                
-                subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
-                                    templateName, 'temp.json'])
-                print("removing temporary file")
-                #os.remove('temp.json')
-                return Response(status=200)
-                
-        else:
-            print("No client_id in request, generating based on uploaded data")
-        '''
 
         # Check if my inout has those fields
         if 'data' not in request.files:
@@ -66,8 +38,25 @@ def upload_data():
             print("Will try to use Json to save")
             json_data = request.get_json(force=True)
             print(json_data)
-            inserted_client_id = add_client_data(json_data)
-            return jsonify({"client_id":inserted_client_id})
+
+            # we check if the json_data is a list
+            if type(json_data) == dict:
+                print("single client as json")
+                json_data["mapping_id"] = mapping_id
+                inserted_client_id = add_client_data(json_data)
+                return jsonify([inserted_client_id])
+            elif type(json_data) == list:
+                print("multiple client as json")
+                inserted_clients = []
+                for client_dict in json_data:
+                    client_dict["mapping_id"] = mapping_id
+                    inserted_client_id = add_client_data(client_dict)
+                    inserted_clients.append(inserted_client_id)
+                return jsonify(inserted_clients)
+            else:
+                # if the incoming data is neither list nor dict
+                return Response(status=400)
+
         else:
             data = request.files['data']
 
@@ -90,9 +79,24 @@ def upload_data():
                         print("Converting bytes object to string, so that it can be converted to dict")
                         data_text=data_text.decode("utf-8")
 
-                    data_dict = json.loads(data_text)
-                    #print(data_dict)
-                    inserted_client_id = add_client_data(data_dict)
+                    inserted_clients = []
+                    json_data = json.loads(data_text)
+                    #print(json_data)
+
+                    if type(json_data)==dict:
+                        print('Single client uploaded')
+                        json_data["mapping_id"] = mapping_id
+                        inserted_client_id = add_client_data(json_data)
+                        inserted_clients.append(inserted_client_id)
+                    elif type(json_data)==list:
+                        print('multiple clients uploaded')
+                        for client_dict in json_data:
+                            client_dict["mapping_id"] = mapping_id
+                            inserted_client_id = add_client_data(client_dict)
+                            inserted_clients.append(inserted_client_id)
+                    else:
+                        # if 
+                        return Response(status=400)
 
                 except Exception as e:
                     print(e)
@@ -103,9 +107,6 @@ def upload_data():
                     data.save(os.path.join(
                         app.config['DATA_UPLOAD_FOLDER'], data_filename))
 
-                    #subprocess.run(['python3', 'docgen.py', 'template/user_a/' +
-                    #                templateName, 'data/user_a/'+data_filename])
-
                 except Exception as e:
                     print(e)
                     return Response(status=409)
@@ -113,8 +114,7 @@ def upload_data():
             else:
                 return Response('["file types not supported"]', status=400)
 
-            # Make a call to the string processing module
-            return jsonify({"client_id":inserted_client_id})
+            return jsonify(inserted_clients)
     else:
         Response(status=405)
 
@@ -189,6 +189,65 @@ def bulk_filling():
         print(e)
         return Response(status=400)
     
+@data_view.route("/check_template_schema_compatibility/<template_id>/<client_id>/", methods=["GET"])
+@cross_origin()
+def check_template_schema_compatibility(template_id, client_id):
+    '''
+    gets jinja fields of template
+    gets mapping of client
+    checks if jinja fields of template are there in mapping
+    returns a dict of missing template fields with AI suggestion of corresponding client_field
+    '''
+    template_jinja_fields = get_jinja_fields_by_id(template_id)
+    client_data = get_client_by_id(client_id)
+    mapping_id = client_data["mapping_id"]
+    mapping_dict = fetch_mapping_by_id(mapping_id)
+    #remove mapping_id during gensim
+    missing_fields = {}
+
+    for jinja_field in template_jinja_fields:
+        if not(jinja_field in mapping_dict):
+            # make the value equal to gensim suggestion
+            missing_fields[jinja_field] = ""
+
+    return jsonify(missing_fields)
+
+@data_view.route("/check_template_schema_compatibility_intelligently/<template_id>/<client_id>/", methods=["GET"])
+@cross_origin()
+def check_template_schema_compatibility_intelligently(template_id, client_id):
+    '''
+    gets jinja fields of template
+    gets mapping of client
+    checks if jinja fields of template are there in mapping
+    returns a dict of missing template fields with AI suggestion of corresponding client_field
+    '''
+    template_jinja_fields = get_jinja_fields_by_id(template_id)
+    client_data = get_client_by_id(client_id)
+    mapping_id = client_data["mapping_id"]
+    mapping_dict = fetch_mapping_by_id(mapping_id)
+    #remove mapping_id during gensim
+    missing_fields = {}
+    client_data_popped = client_data
+    client_data_popped.pop("_id", None)
+    client_data_popped.pop("mapping_id", None)
+    client_data_keys = list(client_data_popped.keys())
+
+    #Gensim FASTTEXT
+    client_data_keys = reshape(client_data_keys, (-1,1))
+    model = FastText(client_data_keys, size=30, window=5, min_count=1, iter=20)
+
+    for jinja_field in template_jinja_fields:
+        if not(jinja_field in mapping_dict):
+            # make the value equal to gensim suggestion
+            if(jinja_field in client_data_keys):
+                print("Match in Client Data")
+                missing_fields[jinja_field] = jinja_field
+            else:
+                print("{} , intelligence_used, confidence : {}".format(jinja_field, model.wv.most_similar(jinja_field)[0]))
+                missing_fields[jinja_field] = model.wv.most_similar(jinja_field)[0][0]
+
+    return jsonify(missing_fields)
+
 
 @data_view.route("/mapping/autopopulate/",  methods=["POST"])
 @cross_origin()

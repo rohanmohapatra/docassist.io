@@ -1,0 +1,7 @@
+{
+    "jmf_client_name": "client_name",
+    "jmf_client_email": "client_email",
+    "jmf_nomination_type": "nomination_type",
+    "jmf_salary_curr": "salary",
+    "jmf_created_date": "date"
+}

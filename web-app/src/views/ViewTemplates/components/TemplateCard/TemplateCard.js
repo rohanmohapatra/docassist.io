@@ -110,7 +110,7 @@ const TemplateCard = props => {
               display="inline"
               variant="body2"
             >
-              <IconButton onClick={e => props.onAction('useTemp', { templateName: template.filename })}>
+              <IconButton onClick={e => props.onAction('useTemp', { templateName: template.filename, templateId: template._id })}>
                 <BuildIcon />
               </IconButton>
               

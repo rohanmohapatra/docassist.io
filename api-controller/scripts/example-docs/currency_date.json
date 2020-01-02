@@ -1,7 +1,24 @@
+[{
+	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
+	"client_name":"client1",
+	"salary":"100000",
+	"date":"24/09/2019",
+	"client_email": "rtalesara77@gmail.com",
+	"nomination_type":"some_nomination"
+},
 {
-	"jmf_declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
-	"jmf_client_name":"PES",
-	"salary_curr":"100000",
-	"jmf_created_date":"24/09/2019",
-	"jmf_client_email": "rtalesara77@gmail.com"
-}
+	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
+	"client_name":"client2",
+	"salary":"100000",
+	"date":"24/09/2019",
+	"client_email": "rtalesara77@gmail.com",
+	"nomination_type":"some_nomination"
+},
+{
+	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
+	"client_name":"client3",
+	"salary":"100000",
+	"date":"24/09/2019",
+	"client_email": "rtalesara77@gmail.com",
+	"nomination_type":"some_nomination"
+}]

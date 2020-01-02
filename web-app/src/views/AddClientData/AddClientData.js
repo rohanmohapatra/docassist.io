@@ -5,7 +5,7 @@ import { Grid, Typography, Link, TextField, Button } from '@material-ui/core';
 import { FilePond } from 'react-filepond';
 import validator from 'validator';
 import 'filepond/dist/filepond.min.css';
-import {  SuccessBar, ErrorBar } from './components';
+import {  SuccessBar, ErrorBar, AddMapping } from './components';
 import axios from 'axios';
 
 const schema = {
@@ -57,6 +57,9 @@ const AddClientData = () => {
     errors: {}
   });
   const [savestate, setSaveState] = useState("none");
+  const [mappingArr, setMappingArr] = React.useState([]);
+  const [mappingSelected, setMappingSelected] = useState(false);
+  const [mappingId, setMappingId] = useState('');
   useEffect(() => {
     const errors = validator.isJSON(formState.values.client_data + '')
     console.log(errors);
@@ -65,6 +68,10 @@ const AddClientData = () => {
       isValid: errors ? false : true,
       errors: errors || {}
     }));
+    axios.get("http://localhost:5000/api/mapping/list_all_mappings/")
+    .then(function(response){
+        setMappingArr(response.data);
+    })
 
   }, []);
 
@@ -86,6 +93,10 @@ const AddClientData = () => {
       }
     }));
   };
+  const callbackParent = function(mappingSelected, mappingId){
+    setMappingSelected(mappingSelected);
+    setMappingId(mappingId);
+  }
 
   const hasError = function(field){
     console.log(field);
@@ -96,7 +107,7 @@ const AddClientData = () => {
     //var data = {filename : self.state.documentName+'.docx', html: self.state.html}
     console.log(formState.values.client_data)
     var data = JSON.parse(formState.values.client_data)
-    axios.post("http://localhost:5000/api/data/upload/",data)
+    axios.post("http://localhost:5000/api/data/upload/"+mappingId+"/",data)
     .then(function(response){
         if(response.status == 200){
           setSaveState("success");
@@ -124,7 +135,9 @@ const AddClientData = () => {
 }
   return (
     <div className={classes.root}>
-      <Typography variant="h1">
+     {!mappingSelected &&  <AddMapping mappingArr={mappingArr} setMappingSelected={callbackParent}/>}
+     {mappingSelected && 
+     <div><Typography variant="h1">
       Hello UserA, choose to upload a JSON file or type in client data.
       </Typography>
       <Grid
@@ -144,7 +157,7 @@ const AddClientData = () => {
             <Typography variant="subtitle2">
               Add a client by uploading a JSON
             </Typography>
-            <FilePond allowMultiple={true} server="http://localhost:5000/api/data/upload/" name="data"/>
+            <FilePond allowMultiple={true} server={"http://localhost:5000/api/data/upload/"+mappingId+"/"} name="data"/>
           </div>
         </Grid>
       </Grid>
@@ -187,7 +200,7 @@ const AddClientData = () => {
           <SuccessBar open={savestate} />
           <ErrorBar open={savestate} message="Error during Save!"/>
         </Grid>  
-      </Grid>
+      </Grid></div>}
     </div>
   );
 };

@@ -52,7 +52,7 @@ const ViewTemplates = props => {
   function onAction(action, payload) {
     if(action === 'useTemp') {
       console.log(action, props, payload);
-      props.history.push('/upload/data', payload);
+      props.history.push('/document/generate', payload);
     }
   };
 
