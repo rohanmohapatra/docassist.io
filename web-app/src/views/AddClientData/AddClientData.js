@@ -138,7 +138,7 @@ const AddClientData = () => {
      {!mappingSelected &&  <AddMapping mappingArr={mappingArr} setMappingSelected={callbackParent}/>}
      {mappingSelected && 
      <div><Typography variant="h1">
-      Hello UserA, choose to upload a JSON file or type in client data.
+      Choose to upload a JSON file or type in client data.
       </Typography>
       <Grid
         container
