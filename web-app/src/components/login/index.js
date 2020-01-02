@@ -85,7 +85,13 @@ const SignupForm = props => {
                     return resp;
                 })
                 .then(resp => resp.json())
-                .then(console.log)
+                .then(json => {
+                    if (json) {
+                        Cookies.set('user', json);
+                        console.log(Cookies.get('user'));
+                        props.onLoS(json);
+                    }
+                })
                 .catch(err => {
                     console.log(err.resp);
 
@@ -195,8 +201,8 @@ const LoginForm = props => {
                 user: formState,
             })
         })
-        .then(resp => {
-            if (resp.status !== 200) {
+            .then(resp => {
+                if (resp.status !== 200) {
                     const error = new Error(resp.statusText);
                     error.resp = resp;
                     throw error;
@@ -210,6 +216,7 @@ const LoginForm = props => {
                 if (json) {
                     Cookies.set('user', json);
                     console.log(Cookies.get('user'));
+                    props.onLoS(json);
                 }
             })
             .catch(err => alert(err.message));
@@ -283,7 +290,7 @@ const LoginForm = props => {
 const AccountInfoPage = props => {
     console.log(props);
 
-    const nameCookie = JSON.parse(Cookies.get('user'));
+    const nameCookie = props.userStr;
 
     return (
         <Container component="main" maxWidth="xs">
@@ -309,23 +316,23 @@ const LoginAndSignupForms = props => {
 
     return (
         <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    {localSignIn ? <LoginForm /> : <SignupForm />}
-                    <Grid container>
-                        <Grid item xs>
-                        </Grid>
-                        <Grid item>
-                            <Link href="#" onClick={handleSignupToggleClick}>
-                                {localSignIn ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
-                            </Link>
-                        </Grid>
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                {localSignIn ? <LoginForm onLoS={props.onLoS} /> : <SignupForm onLoS={props.onLoS} />}
+                <Grid container>
+                    <Grid item xs>
                     </Grid>
-                </div>
-                {/* <IconButton>
+                    <Grid item>
+                        <Link href="#" onClick={handleSignupToggleClick}>
+                            {localSignIn ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
+                        </Link>
+                    </Grid>
+                </Grid>
+            </div>
+            {/* <IconButton>
                     <Google />
                 </IconButton>
                 Sign up with Google
@@ -345,12 +352,13 @@ const LoginComp = props => {
 
     let nameCookie = Cookies.get('user');
 
-    if(nameCookie) {
-        console.log('LoggedIn:', nameCookie);        
+    if (nameCookie) {
+        console.log('LoggedIn:', nameCookie);
+        nameCookie = JSON.parse(nameCookie);
     }
-    
+
     // to hold state if the user is logged in
-    const [ loggedIn, setLoggedIn ] = React.useState(nameCookie);
+    const [loggedIn, setLoggedIn] = React.useState(nameCookie);
 
     console.log(loggedIn);
 
@@ -375,7 +383,7 @@ const LoginComp = props => {
             >
                 <Paper className={classes.paperHolder}>
 
-                    {loggedIn ? <AccountInfoPage nameCookie /> :<LoginAndSignupForms />}
+                    {loggedIn ? <AccountInfoPage userStr={nameCookie} /> : <LoginAndSignupForms onLoS={tok => setLoggedIn(tok)} />}
 
                 </Paper>
             </Modal>
