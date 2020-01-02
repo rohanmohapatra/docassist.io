@@ -73,7 +73,7 @@ const AddMapping = (props) => {
   return (
     <div>
      <Typography variant="h1">
-      Hello UserA, please select a mapping or upload a mapping
+      Please select a mapping or upload a mapping
       </Typography>
       <Grid
         container

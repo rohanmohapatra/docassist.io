@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Modal,
-    IconButton,
     Paper,
     Container,
     CssBaseline,
@@ -56,6 +55,11 @@ const useStyles = makeStyles(theme => ({
         width: theme.spacing(20),
         height: theme.spacing(20),
         backgroundColor: 'grey',
+    },
+    avatarButton: {
+        backgroundColor: 'grey',
+        padding: '0.025rem',
+        margin: '1rem',
     },
 }));
 
@@ -301,14 +305,37 @@ const AccountInfoPage = props => {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <Avatar
-                alt={nameCookie.user._id} 
-                src={`https://robohash.org/${nameCookie.user._id}.png?set=set5`}
-                className={classes.large}
-            />
-            <p>
-                {nameCookie.user.email}
-            </p>
+            <div className={classes.paper}>
+                <h1>
+                    Welcome!
+                </h1>
+                <Avatar
+                    alt={nameCookie.user._id}
+                    src={`https://robohash.org/${nameCookie.user._id}.png?set=set5`}
+                    className={classes.large}
+                />
+                <h5 style={{ color: 'grey' }}>
+                    ID: {nameCookie.user._id}
+                </h5>
+                <h3>
+                    {nameCookie.user.email}
+                </h3>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={
+                        () => {
+                            Cookies.remove('user');
+                            props.onLoS(undefined);
+                        }
+                    }
+                >
+                    Log Out
+                </Button>
+            </div>
         </Container>
     );
 }
@@ -358,11 +385,10 @@ const LoginComp = props => {
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [open, setOpen] = React.useState(false);
 
-    let nameCookie = Cookies.get('user');
+    let nameCookie = Cookies.getJSON('user');
 
     if (nameCookie) {
         console.log('LoggedIn:', nameCookie);
-        nameCookie = JSON.parse(nameCookie);
     }
 
     // to hold state if the user is logged in
@@ -380,12 +406,13 @@ const LoginComp = props => {
 
     return (
         <div>
-            <Avatar 
-                type="button" 
+            <Avatar
+                type="button"
                 onClick={handleOpen}
                 src={loggedIn ? `https://robohash.org/${nameCookie.user._id}.png?set=set5` : null}
-                >
-                {loggedIn ? null : <AccountCircle />}                
+                className={classes.avatarButton}
+            >
+                {loggedIn ? null : <AccountCircle />}
             </Avatar>
             <Modal
                 aria-labelledby="simple-modal-title"
@@ -395,7 +422,7 @@ const LoginComp = props => {
             >
                 <Paper className={classes.paperHolder}>
 
-                    {loggedIn ? <AccountInfoPage userStr={nameCookie} /> : <LoginAndSignupForms onLoS={tok => setLoggedIn(tok)} />}
+                    {loggedIn ? <AccountInfoPage userStr={nameCookie} onLoS={tok => setLoggedIn(tok)} /> : <LoginAndSignupForms onLoS={tok => setLoggedIn(tok)} />}
 
                 </Paper>
             </Modal>

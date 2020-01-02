@@ -38,7 +38,7 @@ const UploadTemplate = () => {
         >
           <div className={classes.content}>
             <Typography variant="h1">
-              Hello, UserA
+              Hello!
             </Typography>
             <Typography variant="subtitle2">
               Upload your templates here (You can upload multiple templates)
