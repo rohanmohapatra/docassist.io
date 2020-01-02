@@ -23,9 +23,15 @@ def get_client_email_by_doc_name(doc_name):
 	)["client_id"]
 	
 	client_data = mongo.db.clients.find_one(
-		{"_id": client_id},
-		projection = {email_field:True}
+		{"_id": client_id}
 	)
+	mapping_id = client_data["mapping_id"]
+	mapping_dict = mongo.db.mapping.find_one(
+		{"_id":mapping_id}
+	)
+	if "jmf_client_email" in mapping_dict:
+		email_field = mapping_dict["jmf_client_email"]
+
 	if (email_field in client_data):
 		return client_data[email_field]
 	else:

@@ -10,6 +10,9 @@ export { default as WriteYourOwnTemplate } from './WriteYourOwnTemplate';
 export { default as EditCompletedDoc } from './EditCompletedDoc';
 export { default as AddClientData } from './AddClientData';
 export { default as ViewClients } from './ViewClients';
-export { default as SignIn } from './SignIn';
+<<<<<<< HEAD
 export { default as AutoTemplateEdit } from './AutoTemplateEdit';
 export { default as AutoTemplateUpload } from './AutoTemplateUpload';
+=======
+export { default as SignIn } from './SignIn';
+>>>>>>> 5d30de3be95d59e475954f5d0e07c3cbc76d00a1
