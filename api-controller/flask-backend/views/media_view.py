@@ -79,3 +79,12 @@ def stream(generated_id):
     return Response(eventStream(), mimetype="text/event-stream")
 
 
+@media_view.route("/download_template/<template_name>/", methods=['GET'])
+@cross_origin()
+def template_download(template_name):
+    print(template_name)
+    folder = app.config['UPLOAD_FOLDER']
+    location = os.path.join(folder, template_name)
+    return send_from_directory(folder, template_name)
+
+

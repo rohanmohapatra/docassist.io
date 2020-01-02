@@ -55,7 +55,10 @@ const useStyles = makeStyles(theme => ({
   verified:{
     color : theme.palette.primary.main,
     fontSize: 15
-    }
+    },
+    docx:{
+      color : '#537EC0',
+    },
 }));
 
 const TemplateCard = props => {
@@ -118,6 +121,9 @@ const TemplateCard = props => {
             <Button variant="contained" color="primary" className={classes.button} href={"/edit/template/"+template._id}>
                 Edit
             </Button>
+            <IconButton href={"http://localhost:5000/api/media/download_template/"+template.filename}>
+                <GetAppIcon className={classes.docx}/>
+              </IconButton>
           </Grid>
         </Grid>
       </CardActions>
