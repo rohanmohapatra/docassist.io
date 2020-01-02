@@ -1,24 +1,45 @@
 [{
+	"jmf_locations":["blore", "mumbai", "london"],
 	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
-	"client_name":"client1",
+	"client_name":"Client1",
 	"salary":"100000",
 	"date":"24/09/2019",
 	"client_email": "rtalesara77@gmail.com",
-	"nomination_type":"some_nomination"
+	"nomination_type":"Client1_nomination",
+	"client_license":"Proprietory",
+	"worker_compensation_insurer":"ABC Group",
+	"worker_policy_number":"Client1_123",
+	"client_address": "Address 1, City 1",
+	"client_telephone":"987654321",
+	"client_fax":"983746"
 },
 {
-	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
-	"client_name":"client2",
-	"salary":"100000",
-	"date":"24/09/2019",
+	"jmf_locations":["blore", "mumbai", "london"],
+	"declaration_type":"ACCIDENT INSURANCE DECLARATION",
+	"client_name":"Client2",
+	"salary":"1000000",
+	"date":"2018/12/01",
 	"client_email": "rtalesara77@gmail.com",
-	"nomination_type":"some_nomination"
+	"nomination_type":"Client2_nomination",
+	"client_license":"Proprietory2",
+	"worker_compensation_insurer":"DEF Group",
+	"worker_policy_number":"Client2_123",
+	"client_address": "Address 2, City 2",
+	"client_telephone":"987654321",
+	"client_fax":"983746"
 },
 {
-	"declaration_type":"MOTOR VEHICLE INSURANCE DECLARATION",
-	"client_name":"client3",
+	"jmf_locations":["blore", "mumbai", "london"],
+	"declaration_type":"FIRE INSURANCE DECLARATION",
+	"client_name":"Client3",
 	"salary":"100000",
-	"date":"24/09/2019",
+	"date":"03/30/2017",
 	"client_email": "rtalesara77@gmail.com",
-	"nomination_type":"some_nomination"
+	"nomination_type":"Client3_nomination",
+	"client_license":"Proprietor3",
+	"worker_compensation_insurer":"GHI Group",
+	"worker_policy_number":"Client3_123",
+	"client_address": "Address 3, City 3",
+	"client_telephone":"987654321",
+	"client_fax":"983746"
 }]
