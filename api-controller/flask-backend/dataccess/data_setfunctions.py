@@ -14,6 +14,13 @@ def add_client_data(client_data):
     result = mongo.db.clients.insert_one(client_data)
     return (result.inserted_id)
 
+def update_client(client_id, update_dict):
+	result = mongo.db.clients.update_one(
+		{"_id":client_id},
+		{"$set": update_dict}
+	)
+	return result.modified_count
+
 def add_document_generated(document_name, client_id):
     collection = mongo.db.generated
     collection.insert_one({"document_name" : document_name, "client_id": client_id, "time_created":time.time(),"status":"done"})

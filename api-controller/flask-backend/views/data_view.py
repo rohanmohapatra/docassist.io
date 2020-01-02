@@ -1,7 +1,7 @@
 from flask import Blueprint, Response, jsonify, request, send_from_directory
 #from dataaccess.get_functions import *
 from dataccess.mapping_getfunctions import fetch_mapping_by_id
-from dataccess.data_setfunctions import add_client_data
+from dataccess.data_setfunctions import add_client_data, update_client
 from dataccess.data_getfunctions import get_all_clients, get_client_by_id, get_all_docs
 from dataccess.templates_getfunctions import get_jinja_fields_by_id
 from flask_cors import CORS, cross_origin
@@ -117,6 +117,22 @@ def upload_data(mapping_id):
             return jsonify(inserted_clients)
     else:
         Response(status=405)
+
+@data_view.route("/update/<client_id>/", methods=['POST'])
+@cross_origin()
+def update_client_with_client_id(client_id):
+    if request.method == 'POST':
+        if request.data:
+            update_to_client_dict = request.get_json(force=True)
+            updated_count = update_client(client_id, update_to_client_dict)
+
+            if updated_count:
+                return Response(status=200)
+            else:
+                return Response(status=409)
+        else:
+            print("No data in request")
+            return Response(status=400)
 
 @data_view.route("/list_all_clients/", methods=["GET"])
 @cross_origin()
