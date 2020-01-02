@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
 import theme from '../../theme';
+import LoginComp from '../login';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -73,20 +74,19 @@ const NavBar = props => {
       spacing={24}
     >
       <Grid item>
-      <RouterLink to="/">
+        <RouterLink to="/">
           <img
             alt="Logo"
             src="/images/logos/docassist.io_black.png"
             height='70'
           />
         </RouterLink>
-
       </Grid>
       <Grid item>
-      <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
+        <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
         <BootstrapButton href="/view/template"  color="inherit"className={classes.navbarButton}>View Templates</BootstrapButton>
         <BootstrapButton href="/view/generated"  color="inherit"className={classes.navbarButton}>View Generated Documents</BootstrapButton>
-        <BootstrapButton color="inherit"className={classes.navbarButton}>Login</BootstrapButton>
+        <LoginComp />
       </Grid>
       </Grid>
       </Toolbar>
