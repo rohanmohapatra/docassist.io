@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
 import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
 import theme from '../../../../theme';
+import LoginComp from './../../../../components/login';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -12,9 +13,9 @@ const useStyles = makeStyles(() => ({
     backgroundColor: theme.palette.navbar.dark,
   },
   navbarButton: {
-    marginTop:15,
+    marginTop: 15,
     marginLeft: 5,
-    marginRight:5
+    marginRight: 5
   }
 
 }));
@@ -23,7 +24,7 @@ const BootstrapButton = withStyles({
     boxShadow: 'none',
     fontSize: 16,
     padding: '6px 12px',
- 
+
     lineHeight: 1.5,
     fontFamily: [
       '-apple-system',
@@ -67,28 +68,28 @@ const Topbar = props => {
       position="fixed"
     >
       <Toolbar>
-      <Grid
-      justify="space-between" // Add it here :)
-      container 
-      spacing={24}
-    >
-      <Grid item>
-      <RouterLink to="/">
-          <img
-            alt="Logo"
-            src="/images/logos/docassist.io_black.png"
-            height='70'
-          />
-        </RouterLink>
-
-      </Grid>
-      <Grid item>
-      <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
-        <BootstrapButton href="/view/template"  color="inherit"className={classes.navbarButton}>View Templates</BootstrapButton>
-        <BootstrapButton href="/view/generated"  color="inherit"className={classes.navbarButton}>View Generated Documents</BootstrapButton>
-        <BootstrapButton color="inherit"className={classes.navbarButton}>Login</BootstrapButton>
-      </Grid>
-      </Grid>
+        <Grid
+          justify="space-between" // Add it here :)
+          container
+          spacing={24}
+        >
+          <Grid item>
+            <RouterLink to="/">
+              <img
+                alt="Logo"
+                src="/images/logos/docassist.io_black.png"
+                height='70'
+              />
+            </RouterLink>
+            <LoginComp />
+          </Grid>
+          <Grid item>
+            <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
+            <BootstrapButton href="/view/template" color="inherit" className={classes.navbarButton}>View Templates</BootstrapButton>
+            <BootstrapButton href="/view/generated" color="inherit" className={classes.navbarButton}>View Generated Documents</BootstrapButton>
+            {/* <BootstrapButton color="inherit" className={classes.navbarButton}>Login</BootstrapButton> */}
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   );

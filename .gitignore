@@ -9,10 +9,18 @@
  api-controller/mongo_data/ 
  api-controller/template/
  api-controller/data/
+__pycache__/
+*.pyc
 
- web-app/node_modules
- 
- /docassis_venv/*
+api-controller/__pycache__/
+api-controller/dataccess/__pycache__/
+api-controller/utils/__pycache__/
+api-controller/views/__pycache__/
+api-controller/template/
+api-controller/data/
 
- /api-controller/__pycache__
+web-app/node_modules
  
+/docassis_venv/*
+
+api-controller/auth-ms/node_modules
