@@ -280,13 +280,20 @@ const LoginForm = props => {
     );
 }
 
-const AccountInfoPage = prop => {
+const AccountInfoPage = props => {
+    console.log(props);
+
+    const nameCookie = JSON.parse(Cookies.get('user'));
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
             <h1>
-                User Logged In
+                User logged in as:
             </h1>
+            <p>
+                {nameCookie.user.email}
+            </p>
         </Container>
     );
 }
@@ -318,14 +325,14 @@ const LoginAndSignupForms = props => {
                         </Grid>
                     </Grid>
                 </div>
-                <IconButton>
+                {/* <IconButton>
                     <Google />
                 </IconButton>
                 Sign up with Google
     
             <Button variant="contained">
                     <Google /> Sign up with Google
-            </Button>
+            </Button> */}
         </Container>
     );
 
@@ -335,9 +342,17 @@ const LoginComp = props => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [open, setOpen] = React.useState(false);
+
+    let nameCookie = Cookies.get('user');
+
+    if(nameCookie) {
+        console.log('LoggedIn:', nameCookie);        
+    }
     
     // to hold state if the user is logged in
-    const [ loggedIn, setLoggedIn ] = React.useState(false);
+    const [ loggedIn, setLoggedIn ] = React.useState(nameCookie);
+
+    console.log(loggedIn);
 
     const handleOpen = () => {
         setOpen(true);
@@ -360,7 +375,7 @@ const LoginComp = props => {
             >
                 <Paper className={classes.paperHolder}>
 
-                    {loggedIn ? <AccountInfoPage /> :<LoginAndSignupForms />}
+                    {loggedIn ? <AccountInfoPage nameCookie /> :<LoginAndSignupForms />}
 
                 </Paper>
             </Modal>
