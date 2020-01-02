@@ -144,6 +144,16 @@ def listAllClients():
         return Response(status=500)
     return jsonify(client_list)
 
+@data_view.route("/list/<client_id>/", methods=["GET"])
+@cross_origin()
+def listclient(client_id):
+    try:
+        client=get_client_by_id(client_id)
+    except Exception as e:
+        print(e)
+        return Response(status=500)
+    return jsonify(client)
+
 @data_view.route("/docs/", methods=['GET'])
 @cross_origin()
 def completedDocs():

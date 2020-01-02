@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid, Typography } from '@material-ui/core';
-import { ClientsTable } from './components';
+import { ClientsTable, ClientData, SuccessBar, ErrorBar } from './components';
 import axios from 'axios';
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,6 +22,8 @@ const useStyles = makeStyles(theme => ({
 const ViewClients = () => {
   const classes = useStyles();
   const [clients, setClients] = useState([]);
+  const [clientData, setClientData] = useState({});
+  const [savestate, setSaveState] = useState("none");
   useEffect(() => {
     const fetchData = async () => {
         var host = 'localhost'
@@ -38,6 +40,16 @@ const ViewClients = () => {
       };
         fetchData();
   },[]);
+  function setClientsParent(selectedClient){
+    
+    axios.get("http://localhost:5000/api/data/list/"+selectedClient[0])
+    .then(function(response){
+      setClientData(response.data);
+    })
+  }
+  function callBackParent(savestate){
+    setSaveState(savestate);
+  }
   return (
     <div className={classes.root}>
       <Grid
@@ -50,8 +62,11 @@ const ViewClients = () => {
           lg={6}
           xs={12}
         >
-          <ClientsTable clients={clients} />   
+          <ClientsTable clients={clients} setClientsParent={setClientsParent}/>   
         </Grid>
+        <ClientData clientData={clientData} setState={callBackParent}/>
+        <SuccessBar open={savestate} />
+          <ErrorBar open={savestate} message="Error during Save!"/>
       </Grid>
     </div>
   );

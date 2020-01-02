@@ -80,6 +80,8 @@ const ClientsTable = props => {
     }
 
     setSelectedClients(newSelectedClients);
+    props.setClientsParent(newSelectedClients);
+    console.log(newSelectedClients)
     //props.callbackFromParent({clients: newSelectedClients});
   };
 
