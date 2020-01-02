@@ -52,6 +52,11 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    large: {
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+        backgroundColor: 'grey',
+    },
 }));
 
 const SignupForm = props => {
@@ -289,15 +294,18 @@ const LoginForm = props => {
 
 const AccountInfoPage = props => {
     console.log(props);
+    const classes = useStyles();
 
     const nameCookie = props.userStr;
 
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
-            <h1>
-                User logged in as:
-            </h1>
+            <Avatar
+                alt={nameCookie.user._id} 
+                src={`https://robohash.org/${nameCookie.user._id}.png?set=set5`}
+                className={classes.large}
+            />
             <p>
                 {nameCookie.user.email}
             </p>
@@ -372,9 +380,13 @@ const LoginComp = props => {
 
     return (
         <div>
-            <IconButton type="button" onClick={handleOpen}>
-                <AccountCircle />
-            </IconButton>
+            <Avatar 
+                type="button" 
+                onClick={handleOpen}
+                src={loggedIn ? `https://robohash.org/${nameCookie.user._id}.png?set=set5` : null}
+                >
+                {loggedIn ? null : <AccountCircle />}                
+            </Avatar>
             <Modal
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
