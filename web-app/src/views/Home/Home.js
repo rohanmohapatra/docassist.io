@@ -12,6 +12,7 @@ import {
 import Avatar from 'avataaars';
 import GitHub from '../../icons/GitHub';
 import theme from '../../theme';
+import { green } from '@material-ui/core/colors';
 const styles = {
     root: {
     },
@@ -66,6 +67,31 @@ const styles = {
     },
     avatar: {
         maxWidth: 345,
+    },
+    autoButton:{
+        position: 'absolute',
+        top: 550,
+        left: 1080,
+        border: '5px solid black',
+        backgroundColor: 'white',
+        width : 300,
+        height: 300
+    },
+    autoText: {
+        fontFamily: 'Montserrat',
+        fontWeight: 800,
+        fontSize: 20
+    },
+    autoNew:{
+        fontFamily: 'Montserrat',
+        fontWeight: 800,
+        fontSize: 20,
+        padding: 20,
+        borderRadius: 10,
+        position: 'relative',
+        top: -100,
+        backgroundColor: green[500],
+        color: 'white'
     }
 };
 
@@ -172,6 +198,15 @@ class Home extends Component {
                         </Grid>
 
                     </Grid>
+                    <Button 
+                    variant="outlined"
+                    href="/upload/autotemplate"
+                    className={classes.autoButton}
+                    >
+                        <Typography variant="h3" className ={classes.autoText}>Try our new Automatic Template Generation Engine</Typography>
+                        <Typography variant="body2" className ={classes.autoNew}>New</Typography>
+
+                    </Button>
                 </div>
                 <div>
                     <Grid

@@ -14,5 +14,6 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/docassist"
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DATA_UPLOAD_FOLDER'] = DATA_UPLOAD_FOLDER
+app.config['AUTOTEMPLATE_UPLOAD_FOLDER'] = os.getcwd() + '/../scripts/autotemplate/user_a'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 mongo = PyMongo(app)

@@ -29,6 +29,11 @@
         "route" : "/api/mapping/",
         "address": "http://localhost:5001/api/mapping",
         "app" : "flask"
+      },
+      {
+        "route" : "/api/autotemplate/",
+        "address": "http://localhost:5001/api/autotemplate",
+        "app" : "flask"
       }
     ]
   }

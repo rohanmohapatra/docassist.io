@@ -10,3 +10,5 @@ export { default as WriteYourOwnTemplate } from './WriteYourOwnTemplate';
 export { default as EditCompletedDoc } from './EditCompletedDoc';
 export { default as AddClientData } from './AddClientData';
 export { default as ViewClients } from './ViewClients';
+export { default as AutoTemplateEdit } from './AutoTemplateEdit';
+export { default as AutoTemplateUpload } from './AutoTemplateUpload';

@@ -16,6 +16,8 @@ import {
     EditCompletedDoc as EditCompletedDocView,
     AddClientData as AddClientDataView,
     ViewClients as ViewClientsView,
+    AutoTemplateEdit as AutoTemplateEditView,
+    AutoTemplateUpload as AutoTemplateUploadView
   } from './views';
 
 const Routes = () => {
@@ -39,10 +41,22 @@ const Routes = () => {
                 path="/upload/template"
             />
             <RouteWithLayout
+                component={AutoTemplateUploadView}
+                exact
+                layout={TemplateLayout}
+                path="/upload/autotemplate"
+            />
+            <RouteWithLayout
                 component={EditTemplateView}
                 exact
                 layout={TemplateLayout}
                 path="/edit/template/:template_id"
+            />
+            <RouteWithLayout
+                component={AutoTemplateEditView}
+                exact
+                layout={TemplateLayout}
+                path="/edit/autotemplate/:template_name"
             />
             <RouteWithLayout
                 component={ViewTemplatesView}

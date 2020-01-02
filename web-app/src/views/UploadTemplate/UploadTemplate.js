@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UploadTemplate = () => {
+const AutoTemplateUpload = () => {
   const classes = useStyles();
 
   return (
@@ -64,4 +64,4 @@ const UploadTemplate = () => {
   );
 };
 
-export default UploadTemplate;
+export default AutoTemplateUpload;
