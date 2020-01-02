@@ -3,7 +3,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/styles';
-import { AppBar, Toolbar, Button, Grid } from '@material-ui/core';
+import { AppBar, Toolbar, Button, Grid, IconButton } from '@material-ui/core';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import theme from '../../theme';
 
 const useStyles = makeStyles(() => ({
@@ -58,7 +60,10 @@ const NavBar = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-
+  const handleLogout = () =>{
+    localStorage.removeItem('username');
+    window.location.href="/sign-in";
+  }
   return (
     <AppBar
       {...rest}
@@ -86,7 +91,9 @@ const NavBar = props => {
       <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
         <BootstrapButton href="/view/template"  color="inherit"className={classes.navbarButton}>View Templates</BootstrapButton>
         <BootstrapButton href="/view/generated"  color="inherit"className={classes.navbarButton}>View Generated Documents</BootstrapButton>
-        <BootstrapButton color="inherit"className={classes.navbarButton}>Login</BootstrapButton>
+        {localStorage.getItem('username') && <Button color="inherit"className={classes.navbarButton}><AccountCircleIcon/> Hi, {localStorage.getItem('username')}</Button>}
+        {localStorage.getItem('username') && <IconButton color="inherit"className={classes.navbarButton} onClick={handleLogout}><ExitToAppIcon/> </IconButton>}
+        {!localStorage.getItem("username") && <BootstrapButton color="inherit"className={classes.navbarButton} href="/sign-in">Login</BootstrapButton>}
       </Grid>
       </Grid>
       </Toolbar>

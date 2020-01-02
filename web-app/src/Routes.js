@@ -16,6 +16,7 @@ import {
     EditCompletedDoc as EditCompletedDocView,
     AddClientData as AddClientDataView,
     ViewClients as ViewClientsView,
+    SignIn as SignInView
   } from './views';
 
 const Routes = () => {
@@ -31,6 +32,12 @@ const Routes = () => {
                 exact
                 layout={MinimalLayout}
                 path="/home"
+            />
+            <RouteWithLayout
+                component={SignInView}
+                exact
+                layout={MinimalLayout}
+                path="/sign-in"
             />
             <RouteWithLayout
                 component={UploadTemplateView}
