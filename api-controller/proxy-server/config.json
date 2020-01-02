@@ -1,34 +1,64 @@
 {
-    "routes": [
-      {
-        "route": "/api/templates/",
-        "address": "http://localhost:5001/api/templates",
-        "app" : "flask"
-      },
-      {
-        "route": "/api/data/",
-        "address": "http://localhost:5001/api/data",
-        "app" : "flask"
-      },
-      {
-        "route" : "/api/email/",
-        "address": "http://localhost:5001/api/email",
-        "app" : "flask"
-      },
-      {
-        "route" : "/api/generate/",
-        "address": "http://localhost:5002/api/generate",
-        "app" : "express"
-      },
-      {
-        "route" : "/api/media/",
-        "address": "http://localhost:5001/api/media",
-        "app" : "flask"
-      },
-      {
-        "route" : "/api/mapping/",
-        "address": "http://localhost:5001/api/mapping",
-        "app" : "flask"
-      }
-    ]
-  }
+  "routes": [
+    {
+      "route": "/api/templates/",
+      "address": "http://localhost:5001/api/templates",
+      "app": "flask"
+    },
+    {
+      "route": "/api/data/",
+      "address": "http://localhost:5001/api/data",
+      "app": "flask"
+    },
+    {
+      "route": "/api/email/",
+      "address": "http://localhost:5001/api/email",
+      "app": "flask"
+    },
+    {
+      "route": "/api/generate/",
+      "address": "http://localhost:5002/api/generate",
+      "app": "express"
+    },
+    {
+      "route": "/api/media/",
+      "address": "http://localhost:5001/api/media",
+      "app": "flask"
+    },
+    {
+      "route": "/api/mapping/",
+      "address": "http://localhost:5001/api/mapping",
+      "app": "flask"
+    },
+    {
+      "route": "/api/templates/",
+      "address": "http://localhost:5001/api/templates",
+      "app": "flask"
+    },
+    {
+      "route": "/api/data/",
+      "address": "http://localhost:5001/api/data",
+      "app": "flask"
+    },
+    {
+      "route": "/api/email/",
+      "address": "http://localhost:5001/api/email",
+      "app": "flask"
+    },
+    {
+      "route": "/api/generate/",
+      "address": "http://localhost:5002/api/generate",
+      "app": "express"
+    },
+    {
+      "route": "/api/users/",
+      "address": "http://localhost:5003/api/users",
+      "app": "express"
+    },
+    {
+      "route": "/",
+      "address": "http://localhost:3000/",
+      "app": "express"
+    }
+  ]
+}
