@@ -60,9 +60,10 @@ def generate_doc(template_location, context, username):
 
 	docx_object.render(context)
 	docx_object.render(context)
-
+	print("docgen in process..")
 	gen_doc_location = os.path.abspath(os.path.dirname(__file__))+"/output/"+username+"/docx/" + client_name + '_' + str(int(time.time())) + '_' + file_name
 	docx_object.save(gen_doc_location)
+	print("docgen finished..")
 
 	return gen_doc_location
 

@@ -59,7 +59,7 @@ app.post('/api/generate/', function(request, response) {
                     exec('python3 ../scripts/docgen.py ../scripts/template/user_a/'+template_name+ ' ../scripts/temp.json', function(err, stdout){
                         //console.log(err);
                         //console.log(stdout);
-                        //console.log(stdout.split("\n"));
+                        console.log("STDOUT Printedhere "+stdout.split("\n"));
                         var output = stdout.split("\n");
                         console.log(insertedId);
                         var documentName = output[output.length -2].split(":")[1];
