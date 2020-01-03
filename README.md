@@ -7,7 +7,7 @@ Techfest MMC India Challenge #1
 Upload a template > Upload data and generate document > View generated documents
 
 ## {{ Template }}
-The template follows a standard templating format called Jinja, which is used in many organisations. This makes our templates highly portable and easy to use.
+The template follows a standard templating format called [Jinja](https://jinja.palletsprojects.com/en/2.10.x/), which is used in many organisations. This makes our templates highly portable and easy to use.
 
 
 ## Key Features
