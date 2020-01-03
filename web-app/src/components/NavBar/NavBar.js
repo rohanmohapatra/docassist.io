@@ -7,6 +7,7 @@ import { AppBar, Toolbar, Button, Grid, IconButton } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import theme from '../../theme';
+import LoginComp from '../login';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -14,9 +15,9 @@ const useStyles = makeStyles(() => ({
     backgroundColor: theme.palette.navbar.dark,
   },
   navbarButton: {
-    marginTop:15,
+    marginTop: 15,
     marginLeft: 5,
-    marginRight:5
+    marginRight: 5
   }
 
 }));
@@ -25,7 +26,7 @@ const BootstrapButton = withStyles({
     boxShadow: 'none',
     fontSize: 16,
     padding: '6px 12px',
- 
+
     lineHeight: 1.5,
     fontFamily: [
       '-apple-system',
@@ -52,7 +53,7 @@ const BootstrapButton = withStyles({
     },
     '&:focus': {
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.5)',
-    },
+    }
   },
 })(Button);
 
@@ -72,30 +73,31 @@ const NavBar = props => {
       position="fixed"
     >
       <Toolbar>
-      <Grid
-      justify="space-between" // Add it here :)
-      container 
-      spacing={24}
-    >
-      <Grid item>
-      <RouterLink to="/">
-          <img
-            alt="Logo"
-            src="/images/logos/docassist.io_black.png"
-            height='70'
-          />
-        </RouterLink>
-
-      </Grid>
-      <Grid item>
-      <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
-        <BootstrapButton href="/view/template"  color="inherit"className={classes.navbarButton}>View Templates</BootstrapButton>
-        <BootstrapButton href="/view/generated"  color="inherit"className={classes.navbarButton}>View Generated Documents</BootstrapButton>
-        {localStorage.getItem('username') && <Button color="inherit"className={classes.navbarButton}><AccountCircleIcon/> Hi, {localStorage.getItem('username')}</Button>}
-        {localStorage.getItem('username') && <IconButton color="inherit"className={classes.navbarButton} onClick={handleLogout}><ExitToAppIcon/> </IconButton>}
-        {!localStorage.getItem("username") && <BootstrapButton color="inherit"className={classes.navbarButton} href="/sign-in">Login</BootstrapButton>}
-      </Grid>
-      </Grid>
+        <Grid
+          justify="space-between" // Add it here :)
+          container
+          spacing={24}
+        >
+          <Grid item>
+            <RouterLink to="/">
+              <img
+                alt="Logo"
+                src="/images/logos/docassist.io_black.png"
+                height='70'
+              />
+            </RouterLink>
+          </Grid>
+          <Grid item>
+            <BootstrapButton href="/upload/template" color="inherit" className={classes.navbarButton}>Upload Template</BootstrapButton>
+            <BootstrapButton href="/view/template" color="inherit" className={classes.navbarButton}>View Templates</BootstrapButton>
+            <BootstrapButton href="/view/generated" color="inherit" className={classes.navbarButton}>View Generated Documents</BootstrapButton>
+          </Grid>
+          <Grid
+            justify="center"
+          >
+            <LoginComp />
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   );
