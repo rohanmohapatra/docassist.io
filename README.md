@@ -1,7 +1,8 @@
 # docassist.io
 ## A software application which assists in document creation using pre-defined templates.
 TEAM: IC69890348
-Techfest MMC India Challenge #1
+
+**Winner** - Techfest MMC India Challenge 
 
 ## Document generation process is easy
 Upload a template > Upload data and generate document > View generated documents
