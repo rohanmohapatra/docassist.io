@@ -3,7 +3,7 @@ Flask==1.1.1
 comtypes==1.1.7
 pymongo==3.10.0
 gensim==3.8.1
-Flask_Cors==3.0.8
+Flask_Cors==3.0.9
 Flask_PyMongo==2.3.0
 yagmail==0.11.224
 docxtpl==0.6.3
